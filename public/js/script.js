@@ -1,22 +1,81 @@
-const loadNodes = () => {
+// import { Socket } from "dgram";
 
-    let request = new XMLHttpRequest();
+// Enabling Websocket
+var socket = io.connect('http://localhost');
 
-    request.open('GET', '/parent');
+// Receiving the refresh data socket emit call in order to refresh data
+socket.on('refreshData', function(data) {
 
+    // Call getRoute to refresh client side data
+    getRoute()
+
+})
+
+// Function to emit refresh to server side web socket
+const dataRefresh = () => {
+
+    socket.emit('refresh')
+
+}
+
+// Function to streamline calling of a refresh
+const getRoute = () => {
+
+    // Create request variable for use in AJAX request
+    const request = new XMLHttpRequest();
+
+    // Open route to post at /parentNode url
+    request.open('POST', '/queryDb');
+
+    // Set Request header to receive JSON
     request.setRequestHeader('Content-Type', 'application/JSON');
 
-    request.onload = function() {
+    // Begin function when data is returned from server
+    request.onload = function(data) {
 
-        console.log(request)
+        // Parsing  out response
+        let resData = JSON.parse(request.response)
 
-        // let data = JSON.parse(request.response)
+        console.log(resData)
 
-        console.log(request.response)
+        // Creating data string container
+        let dataStr = ''
+
+        // If root or parent don't exist then exit function
+        if (!resData.rootNode || !resData.parentNode) {
+            alert('missing data')
+            return
+        }
+
+        // Creating root section of list
+        dataStr += `<li>Root</li><ul class='parentUl'>`
+
+        // Loop through each factory and add to data string
+        for (let i = 0; i < resData.parentNode.length; i++) {
+
+            // Add factory data to list
+            dataStr += `<li>${resData.parentNode[i].parentName}</li><ul class='childUl'>`
+
+            // Loop through current factories and gather the generated numbers
+            for (let k = 0; k < resData.parentNode[i].childNode.length; k++) {
+                dataStr += `<li>${resData.parentNode[i].childNode[k].assignNum}</li>`
+            }
+
+            // Close out children unordered list
+            dataStr += '</ul>'
+
+        }
+
+        // Close out factory unordered list
+        dataStr += '</ul>'
+
+        // Set HTML content to be the above concatenated dataStr
+        document.getElementById('listView').innerHTML = dataStr
+
     }
 
-    request.send(null)
-
+    // Send data to server
+    request.send()
 
 }
 
@@ -101,9 +160,6 @@ const postNodes = () => {
 
     }
 
-
-
-
     // Create data object to send to server
     const data = {
         name: name.value,
@@ -125,7 +181,7 @@ const postNodes = () => {
     request.onload = function() {
 
         // Set data object
-        let data = JSON.parse(request.response)
+        let data = request.response
 
         // Reset input borders and values for another entry on successful entry
         name.style.borderColor = 'black';
@@ -137,9 +193,11 @@ const postNodes = () => {
         upperLim.style.borderColor =  'black';
         upperLim.value = '';
         
-
+        
 
         console.log(data)
+
+        dataRefresh()
     }   
 
     // Send data to server
@@ -147,3 +205,5 @@ const postNodes = () => {
         data
     }))
 }
+
+getRoute()

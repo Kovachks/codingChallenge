@@ -1,7 +1,5 @@
 let mysql = require('mysql');
 
-console.log(process.env.databasePass)
-
 //Set up mysql connection
 const connection = mysql.createConnection({
     port: 3306,

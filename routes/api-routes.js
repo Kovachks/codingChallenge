@@ -1,16 +1,31 @@
 const connection = require('../app/config/connection.js')
 
+var io = require("socket.io")(80);
+
+io.on('connection', function (socket) {
+
+    console.log('a user has connected')
+
+    socket.on('refresh', function(data) {
+
+        io.emit('refreshData')
+    })
+
+
+  });
+
 module.exports = function(app) {
-    app.get('/parent', function(req, res) {
-         console.log('fired')
+    app.post('/queryDb', function(req, res) {
         let dbQuery = 'SELECT * FROM parentNode';
 
-        connection.query(dbQuery, function(err, res) {
+        connection.query(dbQuery, function(err, result) {
             if (err) throw err;
 
-            console.log('this is a test:' + res)
+            let dataObj = {}
+            
+            dataObj.parentNode = result
 
-            res.json(result)
+            queryRoot(dataObj, res)
         })
     })
 
@@ -22,7 +37,6 @@ module.exports = function(app) {
 
         connection.query(dbQuery, data.factoryName, function(err, result) {
             if (err) throw err;
-            console.log('posted to root successfully')
             res.send(result)
         })
 
@@ -36,7 +50,6 @@ module.exports = function(app) {
 
     connection.query(dbQuery, {factoryName: data.name}, function(err, result) {
         if (err) throw err;
-        console.log('posted to root successfully')
 
         postParent(data, res)
     })
@@ -51,11 +64,8 @@ const postParent = (data, res) => {
     // Insert into parent node
     let dbQuery = 'INSERT INTO parentNode (parentName, childNum, upperBound, lowerBound) VALUES (?, ?, ?, ?);'
 
-    console.log(dbQuery)
-
     connection.query(dbQuery, [data.name, data.childNum, data.upperLim, data.lowerLim], function(err, result) {
         if (err) throw err;
-        console.log('posted parentNode successfully')
         postChild(data, res, result)
     })
 }
@@ -64,7 +74,6 @@ const postParent = (data, res) => {
 
     // console.log('the result: ' + JSON.stringify(result))
     
-
     let mainArr = []
 
     let insertId = result.insertId
@@ -78,7 +87,7 @@ const postParent = (data, res) => {
 
         let arr = []
 
-        let numGen = Math.floor(Math.random() * (high - low) + high)    
+        let numGen = Math.floor(Math.random() * (high - low) + low)    
 
         // console.log(numGen)
         
@@ -87,14 +96,53 @@ const postParent = (data, res) => {
         mainArr.push(arr)
     }
 
-    console.log(mainArr)
-
     let dbQuery = 'INSERT INTO childNode (parentId, assignNum) VALUES ?'
 
     connection.query(dbQuery, [mainArr], function(err, result) {
         if (err) throw err;
-        console.log(result)
     })
 
     res.end()
+ };
+
+ const queryRoot = (dataObj, res) => {
+
+    let dbQuery = 'SELECT * FROM root'
+
+    connection.query(dbQuery, function(err, result) {
+
+        dataObj.rootNode = result
+
+        childRoot(dataObj, res)
+
+    })
+
+ }
+
+ const childRoot = (dataObj, res) => {
+
+    let dbQuery = 'SELECT * FROM childNode'
+
+    connection.query(dbQuery, function(err, result) {
+        
+        for (let i = 0; i < dataObj.parentNode.length; i++) {
+            let childArr =[]
+            for (let k = 0; k < result.length; k++) {
+
+                if (result[k].parentID === dataObj.parentNode[i].id) {
+
+                    childArr.push(result[k])
+                 
+                }
+
+            }
+
+            dataObj.parentNode[i].childNode = childArr
+
+        }
+
+        res.send(dataObj)
+    
+    })
+
  }

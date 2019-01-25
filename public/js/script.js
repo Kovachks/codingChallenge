@@ -20,7 +20,6 @@ const loadNodes = () => {
 
 }
 
-
 const postNodes = () => {
 
     // Create variables used multiple times for ease of use later

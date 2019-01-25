@@ -5,40 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+
+    <!-- Link Style Sheets -->
+    <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link rel="stylesheet" href="./css/style.css">
+
 </head>
 <body>
+  <div class='container'>
+    <div class='row'>
+      <div class='col-md-2'>
+      </div>
+      <div class='col-md-8 inputDiv'>
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="Factory Name" id='name'>
+        </div>
+        <div class="input-group">
+          <input type="number" class="form-control"placeholder="Number of Child Nodes" id='childNum'>
+          <input type="number" class="form-control" placeholder="Lower Limit" id='lowerLim'>
+          <input type="number" class="form-control"placeholder="Upper Limit" id='upperLim'>
+        </div>
+      </div>
+      <div class='col-md-2 buttonDiv'>    
+        <button type="button" class="btn btn-secondary" onclick='postNodes()'>Generate Node</button> 
+      </div>  
+    </div>
+  </div>
+    <div class='row'>
+      <div class='col-md-2'>
 
-  <input type="text" placeholder="Factory Name" id='name'>
-  <input type="number" placeholder="Number of Child Nodes" id='childNum'>
-  <input type="number" placeholder="Lower Limit" id='lowerLim'>
-  <input type="number" placeholder="Upper Limit" id='upperLim'>
-  <button onclick='postNodes()'>Generate Node</button>
-    <ul id="myUL">
-        <li><span class="caret">Beverages</span>
-          <ul class="nested">
-            <li>Water</li>
-            <li>Coffee</li>
-            <li><span class="caret">Tea</span>
-              <ul class="nested">
-                <li>Black Tea</li>
-                <li>White Tea</li>
-                <li><span class="caret">Green Tea</span>
-                  <ul class="nested">
-                    <li>Sencha</li>
-                    <li>Gyokuro</li>
-                    <li>Matcha</li>
-                    <li>Pi Lo Chun</li>
-                  </ul>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </li>
-      </ul>
-      <link rel="stylesheet" href="./css/reset.css">
-      <link rel="stylesheet" href="./css/style.css">
-      <script src='./js/script.js'></script>
-      <script src='./js/treeview.js'></script>
+      </div>
+      <div class='col-md-8'>
+        <h4>This is a test</h4>
+      </div>
+    </div>
+  <div class='container'>
+
+  </div>
+  
+  <!-- Call Scripts -->
+  <script src='./js/script.js'></script>
+  <script src='./js/treeview.js'></script>
 
 </body>
 </html>

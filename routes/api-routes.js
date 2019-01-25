@@ -38,7 +38,7 @@ module.exports = function(app) {
         if (err) throw err;
         console.log('posted to root successfully')
 
-        postRoot(data, res)
+        postParent(data, res)
     })
 
 
@@ -46,7 +46,7 @@ module.exports = function(app) {
     
 }
 
-const postRoot = (data, res) => {
+const postParent = (data, res) => {
 
     // Insert into parent node
     let dbQuery = 'INSERT INTO parentNode (parentName, childNum, upperBound, lowerBound) VALUES (?, ?, ?, ?);'
@@ -56,30 +56,45 @@ const postRoot = (data, res) => {
     connection.query(dbQuery, [data.name, data.childNum, data.upperLim, data.lowerLim], function(err, result) {
         if (err) throw err;
         console.log('posted parentNode successfully')
-        postChild(data, res)
+        postChild(data, res, result)
     })
 }
 
- const postChild = (data, res) => {
+ const postChild = (data, res, result) => {
+
+    // console.log('the result: ' + JSON.stringify(result))
     
-    let arr = []
+
+    let mainArr = []
+
+    let insertId = result.insertId
 
     let high = parseInt(data.upperLim)
     let low = parseInt(data.lowerLim)
 
-
-     console.log(data)
+    //  console.log(data)
 
     for (let i = 0; i < data.childNum; i++) {
 
-     
+        let arr = []
+
         let numGen = Math.floor(Math.random() * (high - low) + high)    
 
-        console.log(numGen)
+        // console.log(numGen)
+        
+        arr.push(insertId)
         arr.push(numGen)
+        mainArr.push(arr)
     }
 
-    console.log(arr)
+    console.log(mainArr)
+
+    let dbQuery = 'INSERT INTO childNode (parentId, assignNum) VALUES ?'
+
+    connection.query(dbQuery, [mainArr], function(err, result) {
+        if (err) throw err;
+        console.log(result)
+    })
 
     res.end()
  }

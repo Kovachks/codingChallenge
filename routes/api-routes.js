@@ -29,47 +29,57 @@ module.exports = function(app) {
     })
 
     app.post('/parentNode', function(req, res) {
-        console.log('parentNode fired')
-        
-        console.log(req.body)
 
-
-        // // Insert into root
-        // let dbQuery = 'INSERT INTO root factoryName VALUE ?; '
-
-        // Insert into parent node
-        let dbQuery = 'INSERT INTO parentNode (parentName, childNum, upperBound, lowerBound) VALUES (?, ?, ?, ?);'
-
-        console.log(dbQuery)
-
-        let data = req.body.data
-
-        connection.query(dbQuery, [data.name, data.childNum, data.upperLim, data.lowerLim], function(err, result) {
-            if (err) throw err;
-            console.log('posted parentNode successfully')
-            postRoot(data, res)
-        })
-    })
-    
-}
-
-const postRoot = (data, res) => {
-            
-    console.log(data)
+    let data = req.body.data
 
     let dbQuery = 'INSERT INTO root SET ?;'
 
     connection.query(dbQuery, {factoryName: data.name}, function(err, result) {
         if (err) throw err;
         console.log('posted to root successfully')
-        res.send(result)
+
+        postRoot(data, res)
+    })
+
+
+    })
+    
+}
+
+const postRoot = (data, res) => {
+
+    // Insert into parent node
+    let dbQuery = 'INSERT INTO parentNode (parentName, childNum, upperBound, lowerBound) VALUES (?, ?, ?, ?);'
+
+    console.log(dbQuery)
+
+    connection.query(dbQuery, [data.name, data.childNum, data.upperLim, data.lowerLim], function(err, result) {
+        if (err) throw err;
+        console.log('posted parentNode successfully')
+        postChild(data, res)
     })
 }
 
-// const postChild = (data, res) => {
+ const postChild = (data, res) => {
     
-//     console.log(data)
+    let arr = []
+
+    let high = parseInt(data.upperLim)
+    let low = parseInt(data.lowerLim)
 
 
+     console.log(data)
 
-// }
+    for (let i = 0; i < data.childNum; i++) {
+
+     
+        let numGen = Math.floor(Math.random() * (high - low) + high)    
+
+        console.log(numGen)
+        arr.push(numGen)
+    }
+
+    console.log(arr)
+
+    res.end()
+ }

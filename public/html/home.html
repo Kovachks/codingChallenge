@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+  <input type="text" placeholder="Factory Name" id='name'>
+  <input type="number" placeholder="Number of Child Nodes" id='childNum'>
+  <input type="number" placeholder="Lower Limit" id='lowerLim'>
+  <input type="number" placeholder="Upper Limit" id='upperLim'>
+  <button onclick='postNodes()'>Generate Node</button>
+    <ul id="myUL">
+        <li><span class="caret">Beverages</span>
+          <ul class="nested">
+            <li>Water</li>
+            <li>Coffee</li>
+            <li><span class="caret">Tea</span>
+              <ul class="nested">
+                <li>Black Tea</li>
+                <li>White Tea</li>
+                <li><span class="caret">Green Tea</span>
+                  <ul class="nested">
+                    <li>Sencha</li>
+                    <li>Gyokuro</li>
+                    <li>Matcha</li>
+                    <li>Pi Lo Chun</li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <link rel="stylesheet" href="./css/reset.css">
+      <link rel="stylesheet" href="./css/style.css">
+      <script src='./js/script.js'></script>
+      <script src='./js/treeview.js'></script>
+
+</body>
+</html>

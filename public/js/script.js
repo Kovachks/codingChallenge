@@ -3,6 +3,22 @@
 // Enabling Websocket
 var socket = io.connect('http://localhost');
 
+document.addEventListener('click', function(e) {
+
+    if (e.srcElement.className === 'factoryName') {
+
+        document.getElementById('inputBox').style.display = 'inline-block' 
+        document.getElementById('inputBox').style.top = `${e.clientY}px`
+        document.getElementById('inputBox').style.left = `${e.clientX + 50}px`
+
+    } else {
+
+        return
+
+    }  
+    
+}, false);
+
 // Receiving the refresh data socket emit call in order to refresh data
 socket.on('refreshData', function(data) {
 
@@ -15,6 +31,18 @@ socket.on('refreshData', function(data) {
 const dataRefresh = () => {
 
     socket.emit('refresh')
+
+}
+
+const generateNewNodes = () => {
+
+
+
+}
+
+const deleteParent = () => {
+
+
 
 }
 
@@ -42,8 +70,7 @@ const getRoute = () => {
         let dataStr = ''
 
         // If root or parent don't exist then exit function
-        if (!resData.rootNode || !resData.parentNode) {
-            alert('missing data')
+        if (!resData.childNode) {
             return
         }
 
@@ -54,11 +81,11 @@ const getRoute = () => {
         for (let i = 0; i < resData.parentNode.length; i++) {
 
             // Add factory data to list
-            dataStr += `<li>${resData.parentNode[i].parentName}</li><ul class='childUl'>`
+            dataStr += `<li class='factoryName' value=${resData.parentNode[i].id}>${resData.parentNode[i].parentName}</li><ul class='childUl'>`
 
             // Loop through current factories and gather the generated numbers
             for (let k = 0; k < resData.parentNode[i].childNode.length; k++) {
-                dataStr += `<li>${resData.parentNode[i].childNode[k].assignNum}</li>`
+                dataStr += `<li value=${resData.parentNode[i].childNode[k].parentID}>${resData.parentNode[i].childNode[k].assignNum}</li>`
             }
 
             // Close out children unordered list
@@ -86,15 +113,38 @@ const postNodes = () => {
     const childNum = document.getElementById('childNum');
     const lowerLim = document.getElementById('lowerLim');
     const upperLim = document.getElementById('upperLim');
+    const error = document.getElementById('errorDisplay')
+
+    // Resetting error display
+    error.style.display = 'none'
+    name.style.borderColor = 'black'
+    childNum.style.borderColor = 'black'
+    lowerLim.style.borderColor = 'black'
+    upperLim.style.borderColor = 'black'
 
 // Begin validating user inputs
 
     // Validate all inputs for content
     if (name.value === '' || childNum.value === '' || lowerLim.value === '' || upperLim.value === '') {
+        
+        error.style.display = 'inline-block'
 
-        alert('please fill out all fields to continue')
+        error.innerHTML = 'Please fill out all fields to continue'
 
         return
+
+    }
+
+    if (name.value.length > 30) {
+        
+        name.style.borderColor = 'red'
+
+        error.style.display = 'inline-block'
+
+        error.innerHTML = 'Factory Name must be 30 characters or less'
+
+        return
+
     }
 
     console.log('continue')
@@ -105,12 +155,20 @@ const postNodes = () => {
     
         childNum.style.borderColor = 'red'
 
+        error.style.display = 'inline-block'
+
+        error.innerHTML = 'Child Numbers must be a whole integer'
+
         return
 
     // Validate between 1-15
     } else if (childNum.value < 1 || childNum.value > 15) {
 
         childNum.style.borderColor = 'red'
+        
+        error.style.display = 'inline-block'
+
+        error.innerHTML = 'Child Numbers must be between 1 and 15'
 
         return
 
@@ -122,12 +180,20 @@ const postNodes = () => {
 
         upperLim.style.borderColor = 'red'
 
+        error.style.display = 'inline-block'
+
+        error.innerHTML = 'Upper Limit must be a whole integer'
+
         return
 
         // between 1-999
     } else if (upperLim.value < 1 || upperLim.value > 999) {
 
         upperLim.style.borderColor = 'red'
+
+        error.style.display = 'inline-block'
+
+        error.innerHTML = 'Upper Limit must be a whole integer between 1 and 999'
 
         return
 
@@ -140,6 +206,10 @@ const postNodes = () => {
 
         lowerLim.style.borderColor = 'red'
 
+        error.style.display = 'inline-block'
+
+        error.innerHTML = 'Lower Limit must be a whole integer'
+
         return
 
     // Between 1-999
@@ -147,14 +217,22 @@ const postNodes = () => {
 
         lowerLim.style.borderColor = 'red'
 
+        error.style.display = 'inline-block'
+
+        error.innerHTML = 'Lower Limit must be a whole integer between 1 and 999'
+
         return
 
     // lower limit needs to be less than upper lim
-    } else if (lowerLim.value >= upperLim.value) {
+    } else if (parseInt(lowerLim.value) >= parseInt(upperLim.value)) {
 
         lowerLim.style.borderColor = 'red'
         
         upperLim.style.borderColor = 'red'
+
+        error.style.display = 'inline-block'
+
+        error.innerHTML = 'Lower Limit value must be lower than Upper Limit'
 
         return
 

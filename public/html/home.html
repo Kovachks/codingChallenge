@@ -22,7 +22,7 @@
           <input type="text" class="form-control" placeholder="Factory Name" id='name'>
         </div>
         <div class="input-group">
-          <input type="number" class="form-control"placeholder="Number of Child Nodes" id='childNum'>
+          <input type="number" class="form-control"placeholder="Children #" id='childNum'>
           <input type="number" class="form-control" placeholder="Lower Limit" id='lowerLim'>
           <input type="number" class="form-control"placeholder="Upper Limit" id='upperLim'>
         </div>
@@ -31,48 +31,32 @@
         <button type="button" class="btn btn-secondary" onclick='postNodes()'>Generate Node</button> 
       </div>  
     </div>
-  </div>
     <div class='row'>
-      <div class='col-md-2'>
-
-      </div>
-      <div class='col-md-8'>
-        <button onclick=getRoute()>Test get</button>
-      </div>
-      
+      <div class='col-md-2'></div>
+        <div class='col-md-8' id='errorDisplay'>
+            this is a test
+          </div>
     </div>
     <div class='row'>
         <div class='col-md-2'>
 
           </div>
-          <div class='col-md-8'>
+          <div class='col-md-3'>
             <ul class='rootUl' id='listView'>
-              <!-- <li>root</li>
-              <ul class='parentUl'>
-                <li>Cleveland
-                  <ul class='childUl'>
-                    <li>1</li>
-                    <li>2</li>
-                    <li>3</li>
-                  </ul>
-                </li>
-              </ul>
-              <ul class='parentUl'>
-                <li>Hanover
-                  <ul class='childUl'>
-                    <li>1</li>
-                    <li>2</li>
-                    <li>3</li>
-                  </ul>
-                </li>
-              </ul> -->
             </ul>
           </div>
           
-        </div>
     </div>
+  </div>
   <div class='container'>
 
+  </div>
+  <div id='inputBox'>
+    <label for="generateInput" id='generageInputLabel'>Item Count:</label>
+    <input type="number" id='generateInput'>
+    <button class='btn btn-secondary generateBtn'>Generate</button>
+    <button class='btn btn-secondary generateBtn'>Delete</button>
+  
   </div>
   
   <!-- Call Scripts -->

@@ -24,29 +24,35 @@ const loadNodes = () => {
 const postNodes = () => {
 
     // Create variables used multiple times for ease of use later
-    const name = document.getElementById('name').value;
-    const childNum = document.getElementById('childNum').value;
-    const lowerLim = document.getElementById('lowerLim').value;
-    const upperLim = document.getElementById('upperLim').value;
-    const nameBorder = document.getElementById('childNum').style.borderColor
-    const childNumBorder = document.getElementById('childNum').style.borderColor
-    const lowerLimBorder = document.getElementById('lowerLim').style.borderColor
-    const upperLimBorder = document.getElementById('upperNum').style.borderColor
+    const name = document.getElementById('name');
+    const childNum = document.getElementById('childNum');
+    const lowerLim = document.getElementById('lowerLim');
+    const upperLim = document.getElementById('upperLim');
 
 // Begin validating user inputs
 
+    // Validate all inputs for content
+    if (name.value === '' || childNum.value === '' || lowerLim.value === '' || upperLim.value === '') {
+
+        alert('please fill out all fields to continue')
+
+        return
+    }
+
+    console.log('continue')
+
     // Validate Child Num for whole integer and between 1-15
     // Regex used to validate a whole integer
-    if (!/^\d+$/.test(childNum)) {
+    if (!/^\d+$/.test(childNum.value)) {
     
-        childNumBorder = 'red'
+        childNum.style.borderColor = 'red'
 
         return
 
     // Validate between 1-15
-    } else if (childNum < 1 || childNum > 15) {
+    } else if (childNum.value < 1 || childNum.value > 15) {
 
-        childNumBorder = 'red'
+        childNum.style.borderColor = 'red'
 
         return
 
@@ -54,16 +60,16 @@ const postNodes = () => {
 
     // Validate Upper limit for whole integer between 1-999
     // Regex used to validate a whole integer
-    if (!/^\d+$/.test(upperLim)) {
+    if (!/^\d+$/.test(upperLim.value)) {
 
-        upperLimBorder = 'red'
+        upperLim.style.borderColor = 'red'
 
         return
 
         // between 1-999
-    } else if (upperLim < 1 || upperLim > 999) {
+    } else if (upperLim.value < 1 || upperLim.value > 999) {
 
-        upperLimBorder = 'red'
+        upperLim.style.borderColor = 'red'
 
         return
 
@@ -72,44 +78,39 @@ const postNodes = () => {
 
     // Validate lowerLim for whole integer between 1-999 and lower than Upper Limit
     // Regex used to validate a whole integer
-    if (!/^\d+$/.test(lowerLim)) {
+    if (!/^\d+$/.test(lowerLim.value)) {
 
-        lowerLimBorder = 'red'
+        lowerLim.style.borderColor = 'red'
 
         return
 
     // Between 1-999
-    } else if (lowerLim < 1 || lowerLim > 999) {
+    } else if (lowerLim.value < 1 || lowerLim.value > 999) {
 
-        lowerLimBorder = 'red'
+        lowerLim.style.borderColor = 'red'
 
         return
 
     // lower limit needs to be less than upper lim
-    } else if (lowerLim >= upperLim) {
+    } else if (lowerLim.value >= upperLim.value) {
 
-        lowerLimBorder = 'red'
+        lowerLim.style.borderColor = 'red'
         
-        upperLimBorder = 'red'
+        upperLim.style.borderColor = 'red'
 
         return
 
     }
 
 
-    // Reset borders for inputs if data was validated correctly
-    nameBorder = 'black';
-    childNumBorder = 'black';
-    lowerLimBorder = 'black';
-    upperLimBorder =  'black';
 
 
     // Create data object to send to server
     const data = {
-        name: name,
-        childNum: childNum,
-        lowerLim: lowerLim,
-        upperLim: upperLim
+        name: name.value,
+        childNum: childNum.value,
+        lowerLim: lowerLim.value,
+        upperLim: upperLim.value
     }
 
     // Create request variable for use in AJAX request
@@ -126,6 +127,18 @@ const postNodes = () => {
 
         // Set data object
         let data = JSON.parse(request.response)
+
+        // Reset input borders and values for another entry on successful entry
+        name.style.borderColor = 'black';
+        name.value = '';
+        childNum.style.borderColor = 'black';
+        childNum.value = '';
+        lowerLim.style.borderColor = 'black';
+        lowerLim.value = '';
+        upperLim.style.borderColor =  'black';
+        upperLim.value = '';
+        
+
 
         console.log(data)
     }   

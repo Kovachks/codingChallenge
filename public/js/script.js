@@ -7,34 +7,61 @@ document.addEventListener('click', function(e) {
 
     if (e.srcElement.className === 'factoryName') {
 
+        document.getElementById('lowerLimitBox').style.display = 'none';
+        document.getElementById('upperLimitBox').style.display = 'none';
+
+        let inputBox = document.getElementById('inputBox')
+        let childBtn = document.getElementById('generateChildBtn')
+
         // set input box near clicked factory list item
-        document.getElementById('inputBox').style.display = 'inline-block' 
-        document.getElementById('inputBox').style.top = `${e.clientY}px`
-        document.getElementById('inputBox').style.left = `${e.clientX + 50}px`
+        inputBox.style.display = 'inline-block' 
+        inputBox.style.top = `${e.clientY}px`
+        inputBox.style.left = `${e.clientX + 50}px`
         
         // adding id value to generate/delete buttons
-        document.getElementById('generateChildBtn').setAttribute('data-id', e.srcElement.attributes[1].value)
-        document.getElementById('generateChildBtn').setAttribute('data-upperBound', e.srcElement.attributes[2].value)
-        document.getElementById('generateChildBtn').setAttribute('data-lowerBound', e.srcElement.attributes[3].value)
+        childBtn.setAttribute('data-id', e.srcElement.attributes[1].value)
+        childBtn.setAttribute('data-upperBound', e.srcElement.attributes[2].value)
+        childBtn.setAttribute('data-lowerBound', e.srcElement.attributes[3].value)
         document.getElementById('deleteBtn').setAttribute('data-id', e.srcElement.attributes[1])
 
 
         return
 
-    } else if (e.srcElement.className === 'range') {
+    } else if (e.srcElement.classList[1] === 'lower') {
 
-        console.log('correct')
+        document.getElementById('inputBox').style.display = 'none';
+        document.getElementById('upperLimitBox').style.display = 'none';
 
-    } 
-    
-    
-    else if (e.srcElement.className === 'btn btn-secondary generateBtn' || e.srcElement.id === 'generateInput' ) {
+        let lowerBox = document.getElementById('lowerLimitBox')
+
+        lowerBox.style.display = 'inline-block' 
+        lowerBox.style.top = `${e.clientY}px`
+        lowerBox.style.left = `${e.clientX + 70}px`
+
+        // Set lower box near clicked lower limit item
+        
+
+    } else if (e.srcElement.classList[1] === 'upper') {
+
+        let upperBox = document.getElementById('upperLimitBox')
+
+        document.getElementById('inputBox').style.display = 'none';
+        document.getElementById('lowerLimitBox').style.display = 'none';
+
+        upperBox.style.display = 'inline-block' 
+        upperBox.style.top = `${e.clientY}px`
+        upperBox.style.left = `${e.clientX + 70}px`
+
+
+    } else if (e.srcElement.className === 'btn btn-secondary generateBtn' || e.srcElement.id === 'generateInput' ) {
 
         return
 
     } else {
 
         document.getElementById('inputBox').style.display = 'none'
+        document.getElementById('lowerLimitBox').style.display = 'none'
+        document.getElementById('upperLimitBox').style.display = 'none'
 
     } 
     
@@ -187,7 +214,7 @@ const getRoute = () => {
         for (let i = 0; i < resData.parentNode.length; i++) {
 
             // Add factory data to list
-            dataStr += `<li class='factoryName' data-id=${resData.parentNode[i].id} data-upperBound=${resData.parentNode[i].upperBound} data-lowerBound=${resData.parentNode[i].lowerBound}}>${resData.parentNode[i].parentName}</li><li class='treeLi'></li><li class='range' value=${resData.parentNode[i].upperBound}>${resData.parentNode[i].upperBound}</li><li class='range'>  -  </li><li class='range' value=${resData.parentNode[i].lowerBound}>${resData.parentNode[i].lowerBound}</li></li><ul class='childUl'>`
+            dataStr += `<li class='factoryName' data-id=${resData.parentNode[i].id} data-upperBound=${resData.parentNode[i].upperBound} data-lowerBound=${resData.parentNode[i].lowerBound}}>${resData.parentNode[i].parentName}</li><li class='treeLi'></li><li class='range upper' data-id=${resData.parentNode[i].id} data-lower=${resData.parentNode[i].lowerBound} data-upper=${resData.parentNode[i].upperBound}>${resData.parentNode[i].upperBound}</li><li class='range'>  -  </li><li class='range lower' data-id=${resData.parentNode[i].id} data-lower=${resData.parentNode[i].lowerBound} data-upper=${resData.parentNode[i].upperBound}>${resData.parentNode[i].lowerBound}</li></li><ul class='childUl'>`
 
             // Loop through current factories and gather the generated numbers
             for (let k = 0; k < resData.parentNode[i].childNode.length; k++) {

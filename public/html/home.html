@@ -1,84 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      <title>Document</title>
 
-    <!-- Link Style Sheets -->
-    <link rel="stylesheet" href="./css/reset.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-    <link rel="stylesheet" href="./css/style.css">
+      <!-- Link Style Sheets -->
+      <link rel="stylesheet" href="./css/reset.css">
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+      <link rel="stylesheet" href="./css/style.css">
 
-</head>
-<body>
-  <div class='container'>
-    <div class='row'>
-      <div class='col-md-2'>
-      </div>
-      <div class='col-md-8 inputDiv'>
-        <div class="input-group">
-          <input type="text" class="form-control" placeholder="Factory Name" id='name'>
+  </head>
+  <body>
+    
+    <div class='container'>
+      
+      <!-- Div for inputs to create new factory -->
+      <div class='row'>
+        <div class='col-md-2'></div>
+        <div class='col-md-8 inputDiv'>        
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="Factory Name" id='name'>
+          </div>
+          <div class="input-group">
+            <input type="number" class="form-control"placeholder="Children #" id='childNum'>        
+            <input type="number" class="form-control" placeholder="Lower Limit" id='lowerLim'>        
+            <input type="number" class="form-control"placeholder="Upper Limit" id='upperLim'>        
+          </div>
         </div>
-        <div class="input-group">
-          <input type="number" class="form-control"placeholder="Children #" id='childNum'>
-          <input type="number" class="form-control" placeholder="Lower Limit" id='lowerLim'>
-          <input type="number" class="form-control"placeholder="Upper Limit" id='upperLim'>
+        <div class='col-md-2 buttonDiv'>    
+          <button type="button" class="btn btn-secondary" onclick='postNodes()'>Generate Factory</button>
+        </div>  
+      </div>
+
+      <!-- Div Containing Error Display -->
+      <div class='row'>
+        <div class='col-md-2'></div>
+        <div class='col-md-8' id='errorDisplay'>
         </div>
       </div>
-      <div class='col-md-2 buttonDiv'>    
-        <button type="button" class="btn btn-secondary" onclick='postNodes()'>Generate Factory</button>
+      
+      <!-- Div holding factory data displayed from server -->
+      <div class='row'>
+        <div class='col-md-2'></div>
+        <div class='col-md-6'>
+          <ul class='rootUl' id='listView'></ul>
+        </div>          
+      </div>
+
+    </div>
+
+    <!-- contains the factory input box -->
+    <div id='inputBox' class='input-group dynamicInput'>
+      <label for="generateInput" id='generateInputLabel' class='generateInputLabel'>Item Count:</label>
+      <input type="number" class='form-control generateInput' id='generateInput'>
+      <div class='btnGroup'>
+        <button class='btn btn-secondary generateBtn' onclick='generateNewNodes()' id='generateChildBtn'>Generate</button>
+        <button class='btn btn-secondary generateBtn' onclick='deleteParent()' id='deleteBtn'>Delete</button>    
       </div>  
     </div>
-    <div class='row'>
-      <div class='col-md-2'></div>
-        <div class='col-md-8' id='errorDisplay'>
-          </div>
-    </div>
-    <div class='row'>
-        <div class='col-md-2'>
 
-          </div>
-          <div class='col-md-6'>
-            <ul class='rootUl' id='listView'>
-            </ul>
-          </div>
-          
+    <!-- Contains the lower limit box -->
+    <div id='lowerLimitBox' class='input-group dynamicInput'>
+      <label for="generateLower" class='generateInputLabel'>New Lower Limit:</label>
+      <input type="number" class='form-control generateInput' id='generateLower'>
+      <div class='btnGroup'>
+        <button class='btn btn-secondary generateBtn' id='updateLower' onclick='updateLower()'>Update</button>
+      </div>
     </div>
-  </div>
-  <div class='container'>
 
-  </div>
-  <div id='inputBox' class='input-group dynamicInput'>
-    <label for="generateInput" id='generateInputLabel' class='generateInputLabel'>Item Count:</label>
-    <input type="number" class='form-control generateInput' id='generateInput'>
-    <div class='btnGroup'>
-      <button class='btn btn-secondary generateBtn' onclick='generateNewNodes()' id='generateChildBtn'>Generate</button>
-      <button class='btn btn-secondary generateBtn' onclick='deleteParent()' id='deleteBtn'>Delete</button>    
-    </div>  
-  </div>
-  <div id='lowerLimitBox' class='input-group dynamicInput'>
-    <label for="generateLower" class='generateInputLabel'>New Lower Limit:</label>
-    <input type="number" class='form-control generateInput' id='generateLower'>
-    <div class='btnGroup'>
-      <button class='btn btn-secondary generateBtn' id='updateLower' onclick='updateLower()'>Update</button>
+    <!-- Contains the upper limit box -->
+    <div id='upperLimitBox' class='input-group dynamicInput'>
+      <label for="generateUpper" class='generateInputLabel'>New Upper Limit:</label>
+      <input type="number" class='form-control generateInput' id='generateUpper'>
+      <div class='btnGroup'>
+        <button class='btn btn-secondary generateBtn' id='updateUpper' onclick='updateUpper()'>Update</button>
+      </div>
     </div>
-  </div>
-  <div id='upperLimitBox' class='input-group dynamicInput'>
-    <label for="generateUpper" class='generateInputLabel'>New Upper Limit:</label>
-    <input type="number" class='form-control generateInput' id='generateUpper'>
-    <div class='btnGroup'>
-      <button class='btn btn-secondary generateBtn' id='updateUpper' onclick='updateUpper()'>Update</button>
-    </div>
-  </div>
-  
-  <!-- Call Scripts -->
-  <!-- <script src="/socket.io/socket.io.js"></script> -->
-  <script src="./js/socket.io.js"></script>
-  <script src='https://boiling-beyond-83726.herokuapp.com/'></script>
-  <script src='./js/clickHandle.js'></script>
-  <script src='./js/script.js'></script>
+    
+    <!-- Link Scripts -->
+    <script src="./js/socket.io.js"></script>
+    <script src='https://boiling-beyond-83726.herokuapp.com/'></script>
+    <script src='./js/clickHandle.js'></script>
+    <script src='./js/script.js'></script>
 
-</body>
+  </body>
 </html>

@@ -57,16 +57,15 @@ const generateNewNodes = () => {
 
     // Begin function when data is returned from server
     request.onload = function(data) {
-        // console.log(data)
 
-    // Hide input box after return from server
-    document.getElementById('inputBox').style.display = 'none'
+        // Hide input box after return from server
+        document.getElementById('inputBox').style.display = 'none'
 
-    // Call dataRefresh to emit socket message
-    dataRefresh()        
+        // Call dataRefresh to emit socket message
+        dataRefresh()        
 
-    // Reset input
-    document.getElementById('generateInput').value = ''
+        // Reset input
+        document.getElementById('generateInput').value = ''
 
     }
 
@@ -88,8 +87,13 @@ const updateLower = () => {
 
     // Validate that the user entered number is lower than the upper limit
     if (updateNum >= upper) {
+
+        // alert user of error
         alert ('Updated number must be lower than upper range')
+
+        // Return function 
         return
+
     } else {
         
         // Create data object to send to server
@@ -116,6 +120,10 @@ const updateLower = () => {
             // Calling refresh function
             dataRefresh()
 
+            // Reset value of input
+            document.getElementById('generateLower').value = ''
+            document.getElementById('lowerLimitBox').style.display = 'none'
+
         }
         
         // Send data to server
@@ -137,13 +145,13 @@ const updateUpper = () => {
     let upper = parseInt(updateBtn.getAttribute('data-upperbound'))
     let count = updateBtn.getAttribute('data-count')
 
-    console.log(typeof updateNum)
-    console.log(updateNum)
-
     // Validate the update number is higher than the lower limit
     if (updateNum <= lower) {
+
+        // alert user of error
         alert ('Updated number must be higher than lower end of range')
         
+        // return from function
         return
 
     } else {
@@ -169,7 +177,12 @@ const updateUpper = () => {
         // Begin function when data is returned from server
         request.onload = function(data) {
         
-        dataRefresh()
+            // Call refresh data
+            dataRefresh()
+
+            // Reset value of input
+            document.getElementById('generateUpper').value = ''
+            document.getElementById('upperLimitBox').style.display = 'none'
 
         }
         
@@ -179,15 +192,16 @@ const updateUpper = () => {
     }
 }
 
+// Deletes the parent
 const deleteParent = () => {
 
+    // Set variable for use later
     let id = document.getElementById('deleteBtn').getAttribute('data-id')
 
+    // Set data object
     let data = {
         id: id
     }
-
-    console.log(data)
 
     // Create request variable for use in AJAX request
     const request = new XMLHttpRequest();
@@ -200,15 +214,15 @@ const deleteParent = () => {
 
     // Begin function when data is returned from server
     request.onload = function(data) {
-        // console.log(data)
 
-    document.getElementById('inputBox').style.display = 'none'
+        // Hide input box when messaged received from server
+        document.getElementById('inputBox').style.display = 'none'
 
-    // Call data refresh
-    dataRefresh()        
+        // Call data refresh
+        dataRefresh()        
 
-    // Reset value of input
-    document.getElementById('generateInput').value = ''
+        // Reset value of input
+        document.getElementById('generateInput').value = ''
 
     }
 
@@ -234,8 +248,6 @@ const getRoute = () => {
 
         // Parsing  out response
         let resData = JSON.parse(request.response)
-
-        console.log(JSON.stringify(resData))
 
         // Creating data string container
         let dataStr = ''
@@ -287,7 +299,7 @@ const getRoute = () => {
 
 }
 
-// Post 
+// Post New Factories
 const postNodes = () => {
 
     // Create variables used multiple times for ease of use later
@@ -304,13 +316,12 @@ const postNodes = () => {
     lowerLim.style.borderColor = 'black'
     upperLim.style.borderColor = 'black'
 
-// Begin validating user inputs
-
+    // Begin validating user inputs
     // Validate all inputs for content
     if (name.value === '' || childNum.value === '' || lowerLim.value === '' || upperLim.value === '') {
         
+        // display error
         error.style.display = 'inline-block'
-
         error.innerHTML = 'Please fill out all fields to continue'
 
         return
@@ -320,10 +331,9 @@ const postNodes = () => {
     // validate name length to be less than or equal to 30
     if (name.value.length > 30) {
         
+        // Display error
         name.style.borderColor = 'red'
-
         error.style.display = 'inline-block'
-
         error.innerHTML = 'Factory Name must be 30 characters or less'
 
         return
@@ -334,10 +344,9 @@ const postNodes = () => {
     // Regex used to validate a whole integer
     if (!/^\d+$/.test(childNum.value)) {
     
+        // Display error
         childNum.style.borderColor = 'red'
-
         error.style.display = 'inline-block'
-
         error.innerHTML = 'Child Numbers must be a whole integer'
 
         return
@@ -345,10 +354,9 @@ const postNodes = () => {
     // Validate between 1-15
     } else if (childNum.value < 1 || childNum.value > 15) {
 
+        // Display error
         childNum.style.borderColor = 'red'
-        
         error.style.display = 'inline-block'
-
         error.innerHTML = 'Child Numbers must be between 1 and 15'
 
         return
@@ -359,10 +367,9 @@ const postNodes = () => {
     // Regex used to validate a whole integer
     if (!/^\d+$/.test(upperLim.value)) {
 
+        // Display error
         upperLim.style.borderColor = 'red'
-
         error.style.display = 'inline-block'
-
         error.innerHTML = 'Upper Limit must be a whole integer'
 
         return
@@ -370,10 +377,9 @@ const postNodes = () => {
         // between 1-999
     } else if (upperLim.value < 1 || upperLim.value > 999) {
 
+        // Display error
         upperLim.style.borderColor = 'red'
-
         error.style.display = 'inline-block'
-
         error.innerHTML = 'Upper Limit must be a whole integer between 1 and 999'
 
         return
@@ -384,10 +390,9 @@ const postNodes = () => {
     // Regex used to validate a whole integer
     if (!/^\d+$/.test(lowerLim.value)) {
 
+        // Display error
         lowerLim.style.borderColor = 'red'
-
         error.style.display = 'inline-block'
-
         error.innerHTML = 'Lower Limit must be a whole integer'
 
         return
@@ -395,10 +400,9 @@ const postNodes = () => {
     // Between 1-999
     } else if (lowerLim.value < 1 || lowerLim.value > 999) {
 
+        // Display error
         lowerLim.style.borderColor = 'red'
-
         error.style.display = 'inline-block'
-
         error.innerHTML = 'Lower Limit must be a whole integer between 1 and 999'
 
         return
@@ -406,12 +410,10 @@ const postNodes = () => {
     // lower limit needs to be less than upper lim
     } else if (parseInt(lowerLim.value) >= parseInt(upperLim.value)) {
 
-        lowerLim.style.borderColor = 'red'
-        
+        // Display error
+        lowerLim.style.borderColor = 'red'        
         upperLim.style.borderColor = 'red'
-
         error.style.display = 'inline-block'
-
         error.innerHTML = 'Lower Limit value must be lower than Upper Limit'
 
         return
@@ -451,6 +453,7 @@ const postNodes = () => {
         upperLim.style.borderColor =  'black';
         upperLim.value = '';
 
+        // Call refresh function
         dataRefresh()
     }   
 

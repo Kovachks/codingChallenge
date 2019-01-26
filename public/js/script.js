@@ -2,7 +2,7 @@
 
 // Enabling Websocket
 if (window.location.hostname !== 'localhost') {
-    var socket = io.connect('https://boiling-beyond-83726.herokuapp.com/:443')
+    var socket = io.connect('https://boiling-beyond-83726.herokuapp.com/socket.io/socket.io.js')
 } else {
     var socket = io.connect('http://' + window.location.hostname);
 }

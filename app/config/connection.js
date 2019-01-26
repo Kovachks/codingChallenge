@@ -1,5 +1,10 @@
 let mysql = require('mysql');
 
+if (process.env.database) {
+    console.log(process.env.database)
+    console.log('database found!')
+}
+
 //Set up mysql connection
 const connection = mysql.createConnection({
     port: process.env.port || 3306,

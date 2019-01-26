@@ -43,6 +43,14 @@ const io = socketIO(server);
 
 io.on('connection', (socket) => {
   console.log('Client connected');
+      socket.on('refresh', function(data) {
+
+
+        console.log('socket received the refresh message')
+
+        io.emit('refreshData')
+    })
+
   socket.on('disconnect', () => console.log('Client disconnected'));
 });
 

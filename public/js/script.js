@@ -1,5 +1,11 @@
 // import { Socket } from "dgram";
 
+var socket = io();
+var el = document.getElementById('server-time');
+socket.on('time', function(timeString) {
+  el.innerHTML = 'Server time: ' + timeString;
+});
+
 // Enabling Websocket
 if (window.location.hostname !== 'localhost') {
     var socket = io.connect('https://boiling-beyond-83726.herokuapp.com/socket.io/socket.io.js')

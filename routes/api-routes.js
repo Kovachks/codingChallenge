@@ -1,34 +1,34 @@
 const connection = require('../app/config/connection.js')
 
-var express = require('express')
-  , http = require('http');
-//make sure you keep this order
-var app = express();
-var server = http.createServer(app);
-var io = require('socket.io').listen(server);
+// var express = require('express')
+//   , http = require('http');
+// //make sure you keep this order
+// var app = express();
+// var server = http.createServer(app);
+// var io = require('socket.io').listen(server);
 
-//... 
+// //... 
 
-console.log("------------------------------: " + process.env.PORT)
-
-
-
-server.listen(process.env.PORT || 80);
-
-io.on('connection', function (socket) {
-
-    console.log('a user has connected' )
-
-    socket.on('refresh', function(data) {
+// console.log("------------------------------: " + process.env.PORT)
 
 
-        console.log('socket received the refresh message')
 
-        io.emit('refreshData')
-    })
+// server.listen(process.env.PORT || 80);
+
+// io.on('connection', function (socket) {
+
+//     console.log('a user has connected' )
+
+//     socket.on('refresh', function(data) {
 
 
-  });
+//         console.log('socket received the refresh message')
+
+//         io.emit('refreshData')
+//     })
+
+
+//   });
 
 module.exports = function(app) {
 

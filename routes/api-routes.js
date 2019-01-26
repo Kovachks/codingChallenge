@@ -99,6 +99,8 @@ module.exports = function(app) {
 
         let data = req.body
 
+        console.log('THIS IS DATA ID: ' + data.id)
+
         let dbQuery = 'DELETE FROM parentNode WHERE id = ?'
 
         connection.query(dbQuery, data.id, function(err, result) {

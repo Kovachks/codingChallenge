@@ -1,13 +1,6 @@
 // import { Socket } from "dgram";
 
 var socket = io();
-var el = document.getElementById('server-time');
-socket.on('time', function(timeString) {
-
-    console.log('fired')
-
-  el.innerHTML = 'Server time: ' + timeString;
-});
 
 // // Enabling Websocket
 // if (window.location.hostname !== 'localhost') {
@@ -19,6 +12,8 @@ socket.on('time', function(timeString) {
 console.log(window.location)
 
 document.addEventListener('click', function(e) {
+
+    console.log(e.srcElement.dataset)
 
     if (e.srcElement.className === 'factoryName') {
 
@@ -34,10 +29,10 @@ document.addEventListener('click', function(e) {
         inputBox.style.left = `${e.clientX + 50}px`
         
         // adding id value to generate/delete buttons
-        childBtn.setAttribute('data-id', e.srcElement.attributes[1].value)
-        childBtn.setAttribute('data-upperBound', e.srcElement.attributes[2].value)
-        childBtn.setAttribute('data-lowerBound', e.srcElement.attributes[3].value)
-        document.getElementById('deleteBtn').setAttribute('data-id', e.srcElement.attributes[1])
+        childBtn.setAttribute('data-id', e.srcElement.dataset.id)
+        childBtn.setAttribute('data-upperBound', e.srcElement.dataset.upperbound)
+        childBtn.setAttribute('data-lowerBound', e.srcElement.dataset.lowerbound)
+        document.getElementById('deleteBtn').setAttribute('data-id', e.srcElement.dataset.id)
 
 
         return
@@ -157,7 +152,7 @@ const generateNewNodes = () => {
 
 const deleteParent = () => {
 
-    let id = parseInt(document.getElementById('deleteBtn').value)
+    let id = document.getElementById('deleteBtn').getAttribute('data-id')
 
     let data = {
         id: id

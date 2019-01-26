@@ -109,6 +109,7 @@ const updateLower = () => {
         // Begin function when data is returned from server
         request.onload = function(data) {
         
+            // Calling refresh function
             dataRefresh()
 
         }
@@ -250,8 +251,14 @@ const getRoute = () => {
 
             // Loop through current factories and gather the generated numbers
             for (let k = 0; k < resData.parentNode[i].childNode.length; k++) {
-                dataStr += `<li class='childLiTree'></li>
-                <li value=${resData.parentNode[i].childNode[k].parentID}>${resData.parentNode[i].childNode[k].assignNum}</li>`
+                
+
+                if (k === resData.parentNode[i].childNode.length - 1) {
+                    dataStr += `<li class='childLiTreeEnd'></li><li class='' value=${resData.parentNode[i].childNode[k].parentID}>${resData.parentNode[i].childNode[k].assignNum}</li>`
+                } else {
+                    dataStr += `<li class='childLiTree'></li><li class='childTreeLi' value=${resData.parentNode[i].childNode[k].parentID}>${resData.parentNode[i].childNode[k].assignNum}</li>`
+                }
+
             }
 
             // Close out children unordered list

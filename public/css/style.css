@@ -8,12 +8,24 @@
   border-left: 1px solid black;
 }
 
+.childTreeLi {
+  border-left: 1px solid
+}
+
 .treeLi {
   width: 25px;
   height: 14px;
   margin-bottom: 10.8px;
   float: left;
   border-bottom: 1px solid black;
+}
+
+.treeLiEnd {
+    width: 25px;
+    height: 14px;
+    margin-bottom: 10.8px;
+    float: left;
+    border-bottom: 1px solid black;
 }
 
 .childLiTree {
@@ -23,9 +35,16 @@
   border-bottom: 1px solid black;
 }
 
+.childLiTreeEnd {
+  width: 25px;
+  height: 14px;
+  float: left;
+  border-bottom: 1px solid black;
+  border-left: 1px solid black;  
+}
+
 .childUl {
   margin-left: 30px;
-  border-left: 1px solid black;
 }
 
 #errorDisplay {

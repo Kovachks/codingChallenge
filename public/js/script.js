@@ -9,12 +9,12 @@ socket.on('time', function(timeString) {
   el.innerHTML = 'Server time: ' + timeString;
 });
 
-// Enabling Websocket
-if (window.location.hostname !== 'localhost') {
-    var socket = io.connect('https://boiling-beyond-83726.herokuapp.com/socket.io/socket.io.js')
-} else {
-    var socket = io.connect('http://' + window.location.hostname);
-}
+// // Enabling Websocket
+// if (window.location.hostname !== 'localhost') {
+//     var socket = io.connect('https://boiling-beyond-83726.herokuapp.com/socket.io/socket.io.js')
+// } else {
+//     var socket = io.connect('http://' + window.location.hostname);
+// }
 
 console.log(window.location)
 

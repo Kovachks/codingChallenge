@@ -176,13 +176,9 @@ const deleteChild = (data, res) => {
 const postParent = (data, res) => {
 
     // Insert into parent node
-    let dbQuery = 'INSERT INTO ?? (??, ??, ??, ??) VALUES (?, ?, ?, ?);'
+    let dbQuery = 'INSERT INTO parentNode (parentName, childNum, upperBound, lowerBound) VALUES (?, ?, ?, ?);'
 
-    let inserts = ['parentNode', 'parentName', 'childNum', 'upperBound', 'lowerBound', data.name, data.childNum, data.upperLim, data.lowerLim]
-
-    dbQuery = mysql.format(dbQuery, inserts)
-
-    connection.query(dbQuery, function(err, result) {
+    connection.query(dbQuery, [data.name, data.childNum, data.upperLim, data.lowerLim], function(err, result) {
         if (err) throw err;
         postChild(data, res, result)
     })
@@ -213,13 +209,9 @@ const postChild = (data, res, result) => {
         mainArr.push(arr)
     }
 
-    let dbQuery = 'INSERT INTO childNode (??, ??) VALUES ?'
+    let dbQuery = 'INSERT INTO childNode (parentId, assignNum) VALUES ?'
 
-    let inserts = ['parentId', 'assignNum', [mainArr]]
-
-    dbQuery = mysql.format(dbQuery, inserts)
-
-    connection.query(dbQuery, function(err, result) {
+    connection.query(dbQuery, [mainArr], function(err, result) {
         if (err) throw err;
     })
 

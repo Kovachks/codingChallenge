@@ -13,7 +13,7 @@ console.log("------------------------------: " + process.env.PORT)
 
 
 
-server.listen(80);
+server.listen(process.env.PORT || 80);
 
 io.on('connection', function (socket) {
 

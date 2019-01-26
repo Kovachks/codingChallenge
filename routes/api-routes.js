@@ -60,6 +60,7 @@ module.exports = function(app) {
 
         })
 
+        
     })
 
     app.post('/parentNode', function(req, res) {
@@ -118,7 +119,11 @@ module.exports = function(app) {
 
             console.log(result)
 
-            res.end()
+            data.lower = data.updateNum
+
+            deleteLower(data, res)
+
+            // res.end()
         })
 
     })
@@ -140,7 +145,9 @@ module.exports = function(app) {
 
             console.log(result)
 
-            res.end()
+            data.upper = data.updateNum
+
+            deleteLower(data, res)
         })
 
     })
@@ -164,9 +171,31 @@ const deleteRoot = (data, res) => {
 
 }
 
+const deleteLower = (data, res) => {
+
+    let dbQuery = 'DELETE FROM ?? WHERE ?? = ?'
+
+    var inserts = ['childNode', 'parentId', data.id]
+
+    dbQuery = mysql.format(dbQuery, inserts)
+
+    connection.query(dbQuery, function(err, result) {
+        if (err) throw err;
+
+        console.log('result from delete update: ' + JSON.stringify(result))
+
+        updateChild(data, res)
+
+    })
+
+}
+
 const updateChild = (data, res) => {
 
+
     console.log('this is the data: ' + JSON.stringify(data))
+
+    console.log(data)
 
     let mainArr = []
 
@@ -186,10 +215,14 @@ const updateChild = (data, res) => {
         mainArr.push(arr)
     }
 
+    console.log('this is the main arr: ' + mainArr)
+
     let dbQuery = 'INSERT INTO childNode (parentId, assignNum) VALUES ?'
 
     connection.query(dbQuery, [mainArr], function(err, result) {
         if (err) throw err;
+
+        console.log(result)
 
         res.end()
 

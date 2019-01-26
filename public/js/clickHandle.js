@@ -43,6 +43,7 @@ document.addEventListener('click', function(e) {
         updateLower.setAttribute('data-id', e.srcElement.dataset.id)
         updateLower.setAttribute('data-upperBound', e.srcElement.dataset.upper)
         updateLower.setAttribute('data-lowerBound', e.srcElement.dataset.lower)
+        updateLower.setAttribute('data-count', e.srcElement.dataset.count)
         
 
     } else if (e.srcElement.classList[1] === 'upper') {
@@ -63,6 +64,7 @@ document.addEventListener('click', function(e) {
         updateUpper.setAttribute('data-id', e.srcElement.dataset.id)
         updateUpper.setAttribute('data-upperBound', e.srcElement.dataset.upper)
         updateUpper.setAttribute('data-lowerBound', e.srcElement.dataset.lower)
+        updateUpper.setAttribute('data-count', e.srcElement.dataset.count)
 
     } else if (e.srcElement.className === 'btn btn-secondary generateBtn' || e.srcElement.className === 'form-control generateInput' ) {
 

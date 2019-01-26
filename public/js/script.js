@@ -80,9 +80,9 @@ const updateLower = () => {
     let id = parseInt(updateBtn.getAttribute('data-id'))
     let lower = parseInt(updateBtn.getAttribute('data-lowerbound'))
     let upper = parseInt(updateBtn.getAttribute('data-upperbound'))
+    let count = updateBtn.getAttribute('data-count')
 
-    console.log(typeof updateNum)
-    console.log(updateNum)
+    console.log('count: ' + count)
 
     if (updateNum >= upper) {
         alert ('Updated number must be lower than upper range')
@@ -91,6 +91,7 @@ const updateLower = () => {
 
         let data = {
             updateNum: updateNum,
+            count: count,
             id: id,
             lower: lower,
             upper: upper
@@ -108,7 +109,8 @@ const updateLower = () => {
         // Begin function when data is returned from server
         request.onload = function(data) {
         
-        
+            dataRefresh()
+
         }
         
         // Send data to server
@@ -126,17 +128,21 @@ const updateUpper = () => {
     let id = parseInt(updateBtn.getAttribute('data-id'))
     let lower = parseInt(updateBtn.getAttribute('data-lowerbound'))
     let upper = parseInt(updateBtn.getAttribute('data-upperbound'))
+    let count = updateBtn.getAttribute('data-count')
 
     console.log(typeof updateNum)
     console.log(updateNum)
 
     if (updateNum <= lower) {
         alert ('Updated number must be higher than lower end of range')
+        
         return
+
     } else {
 
         let data = {
             updateNum: updateNum,
+            count: count,
             id: id,
             lower: lower,
             upper: upper
@@ -237,11 +243,15 @@ const getRoute = () => {
         for (let i = 0; i < resData.parentNode.length; i++) {
 
             // Add factory data to list
-            dataStr += `<li class='factoryName' data-id=${resData.parentNode[i].id} data-upperBound=${resData.parentNode[i].upperBound} data-lowerBound=${resData.parentNode[i].lowerBound}}>${resData.parentNode[i].parentName}</li><li class='treeLi'></li><li class='range upper' data-id=${resData.parentNode[i].id} data-lower=${resData.parentNode[i].lowerBound} data-upper=${resData.parentNode[i].upperBound}>${resData.parentNode[i].upperBound}</li><li class='range'>  -  </li><li class='range lower' data-id=${resData.parentNode[i].id} data-lower=${resData.parentNode[i].lowerBound} data-upper=${resData.parentNode[i].upperBound}>${resData.parentNode[i].lowerBound}</li></li><ul class='childUl'>`
+            dataStr += `<li class='factoryName' data-id=${resData.parentNode[i].id} data-upperBound=${resData.parentNode[i].upperBound} data-lowerBound=${resData.parentNode[i].lowerBound}}>${resData.parentNode[i].parentName}</li>
+            <li class='treeLi'></li><li class='range upper' data-id=${resData.parentNode[i].id} data-count=${resData.parentNode[i].childNum} data-lower=${resData.parentNode[i].lowerBound} data-upper=${resData.parentNode[i].upperBound}>${resData.parentNode[i].upperBound}</li>
+            <li class='range'>  -  </li><li class='range lower' data-id=${resData.parentNode[i].id} data-count=${resData.parentNode[i].childNum} data-lower=${resData.parentNode[i].lowerBound} data-upper=${resData.parentNode[i].upperBound}>${resData.parentNode[i].lowerBound}</li>
+            <ul class='childUl'>`
 
             // Loop through current factories and gather the generated numbers
             for (let k = 0; k < resData.parentNode[i].childNode.length; k++) {
-                dataStr += `<li class='childLiTree'></li><li value=${resData.parentNode[i].childNode[k].parentID}>${resData.parentNode[i].childNode[k].assignNum}</li>`
+                dataStr += `<li class='childLiTree'></li>
+                <li value=${resData.parentNode[i].childNode[k].parentID}>${resData.parentNode[i].childNode[k].assignNum}</li>`
             }
 
             // Close out children unordered list

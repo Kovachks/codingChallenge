@@ -1,6 +1,15 @@
 const connection = require('../app/config/connection.js')
 
-var io = require("socket.io")(8080);
+var express = require('express')
+  , http = require('http');
+//make sure you keep this order
+var app = express();
+var server = http.createServer(app);
+var io = require('socket.io').listen(server);
+
+//... 
+
+server.listen(80);
 
 io.on('connection', function (socket) {
 

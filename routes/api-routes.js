@@ -1,6 +1,6 @@
 const connection = require('../app/config/connection.js')
 
-var io = require("socket.io")(80);
+var io = require("socket.io")(3000);
 
 io.on('connection', function (socket) {
 

@@ -1,7 +1,13 @@
 // import { Socket } from "dgram";
 
 // Enabling Websocket
-var socket = io.connect(window.location.hostname);
+if (window.location.hostname !== 'localhost') {
+    var socket = io.connect('https://' + window.location.hostname)
+} else {
+    var socket = io.connect('http://' + window.location.hostname);
+}
+
+console.log(window.location)
 
 document.addEventListener('click', function(e) {
 

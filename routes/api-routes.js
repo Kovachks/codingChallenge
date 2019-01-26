@@ -1,10 +1,10 @@
 const connection = require('../app/config/connection.js')
 
-var io = require("socket.io")(3000);
+var io = require("socket.io")(80);
 
 io.on('connection', function (socket) {
 
-    console.log('a user has connected')
+    console.log('a user has connected' )
 
     socket.on('refresh', function(data) {
 

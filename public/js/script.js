@@ -7,20 +7,45 @@ document.addEventListener('click', function(e) {
 
     if (e.srcElement.className === 'factoryName') {
 
+        // set input box near clicked factory list item
         document.getElementById('inputBox').style.display = 'inline-block' 
         document.getElementById('inputBox').style.top = `${e.clientY}px`
         document.getElementById('inputBox').style.left = `${e.clientX + 50}px`
+        
+        // adding id value to generate/delete buttons
+        document.getElementById('generateChildBtn').setAttribute('data-id', e.srcElement.attributes[1].value)
+        document.getElementById('generateChildBtn').setAttribute('data-upperBound', e.srcElement.attributes[2].value)
+        document.getElementById('generateChildBtn').setAttribute('data-lowerBound', e.srcElement.attributes[3].value)
+        document.getElementById('deleteBtn').setAttribute('data-id', e.srcElement.attributes[1])
 
-    } else {
 
         return
 
-    }  
+    } else if (e.srcElement.className === 'range') {
+
+        console.log('correct')
+
+    } 
+    
+    
+    else if (e.srcElement.className === 'btn btn-secondary generateBtn' || e.srcElement.id === 'generateInput' ) {
+
+        return
+
+    } else {
+
+        document.getElementById('inputBox').style.display = 'none'
+
+    } 
     
 }, false);
 
 // Receiving the refresh data socket emit call in order to refresh data
 socket.on('refreshData', function(data) {
+
+    console.log('socket received the refreshdata command')
+
+    document.getElementById('listView').innerHTML = ''
 
     // Call getRoute to refresh client side data
     getRoute()
@@ -30,19 +55,100 @@ socket.on('refreshData', function(data) {
 // Function to emit refresh to server side web socket
 const dataRefresh = () => {
 
+    console.log('the socket emitted the refresh')
+
     socket.emit('refresh')
 
 }
 
 const generateNewNodes = () => {
 
+    let btn = document.getElementById('generateChildBtn')
 
+    let id = btn.getAttribute('data-id')
+
+    let upper = btn.getAttribute('data-upperbound')
+
+    let lower = btn.getAttribute('data-lowerbound')
+
+    let count = parseInt(document.getElementById('generateInput').value)
+
+    if (count > 15 || count < 1) {
+        
+        alert('new count must be between 1 and 15')
+        
+        return
+    }
+
+
+
+    let data = {
+        id: id,
+        count: count,
+        upper: upper,
+        lower: lower
+    }
+
+    // Create request variable for use in AJAX request
+    const request = new XMLHttpRequest();
+
+    // Open route to post at /parentNode url
+    request.open('POST', '/updateDb');
+
+    // Set Request header to receive JSON
+    request.setRequestHeader('Content-Type', 'application/JSON');
+
+    // Begin function when data is returned from server
+    request.onload = function(data) {
+        // console.log(data)
+
+        console.log('----------------------------------------------------------------------')
+
+    console.log(request.response)
+
+    dataRefresh()        
+
+    }
+
+    request.send(JSON.stringify(data))
 
 }
 
 const deleteParent = () => {
 
+    let id = parseInt(document.getElementById('deleteBtn').value)
 
+    let data = {
+        id: id
+    }
+
+    console.log(data)
+
+    // Create request variable for use in AJAX request
+    const request = new XMLHttpRequest();
+
+    // Open route to post at /parentNode url
+    request.open('POST', '/deleteDb');
+
+    // Set Request header to receive JSON
+    request.setRequestHeader('Content-Type', 'application/JSON');
+
+    // Begin function when data is returned from server
+    request.onload = function(data) {
+        // console.log(data)
+
+        console.log('----------------------------------------------------------------------')
+
+    console.log(request.response)
+
+    dataRefresh()        
+
+    }
+
+
+
+    // Send data to server
+    request.send(JSON.stringify(data))
 
 }
 
@@ -70,7 +176,7 @@ const getRoute = () => {
         let dataStr = ''
 
         // If root or parent don't exist then exit function
-        if (!resData.childNode) {
+        if (resData.parentNode[0] === undefined || !resData.parentNode[0] ) {
             return
         }
 
@@ -81,11 +187,11 @@ const getRoute = () => {
         for (let i = 0; i < resData.parentNode.length; i++) {
 
             // Add factory data to list
-            dataStr += `<li class='factoryName' value=${resData.parentNode[i].id}>${resData.parentNode[i].parentName}</li><ul class='childUl'>`
+            dataStr += `<li class='factoryName' data-id=${resData.parentNode[i].id} data-upperBound=${resData.parentNode[i].upperBound} data-lowerBound=${resData.parentNode[i].lowerBound}}>${resData.parentNode[i].parentName}</li><li class='treeLi'></li><li class='range' value=${resData.parentNode[i].upperBound}>${resData.parentNode[i].upperBound}</li><li class='range'>  -  </li><li class='range' value=${resData.parentNode[i].lowerBound}>${resData.parentNode[i].lowerBound}</li></li><ul class='childUl'>`
 
             // Loop through current factories and gather the generated numbers
             for (let k = 0; k < resData.parentNode[i].childNode.length; k++) {
-                dataStr += `<li value=${resData.parentNode[i].childNode[k].parentID}>${resData.parentNode[i].childNode[k].assignNum}</li>`
+                dataStr += `<li class='childLiTree'></li><li value=${resData.parentNode[i].childNode[k].parentID}>${resData.parentNode[i].childNode[k].assignNum}</li>`
             }
 
             // Close out children unordered list
@@ -146,8 +252,6 @@ const postNodes = () => {
         return
 
     }
-
-    console.log('continue')
 
     // Validate Child Num for whole integer and between 1-15
     // Regex used to validate a whole integer
@@ -270,10 +374,6 @@ const postNodes = () => {
         lowerLim.value = '';
         upperLim.style.borderColor =  'black';
         upperLim.value = '';
-        
-        
-
-        console.log(data)
 
         dataRefresh()
     }   

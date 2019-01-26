@@ -8,6 +8,9 @@ io.on('connection', function (socket) {
 
     socket.on('refresh', function(data) {
 
+
+        console.log('socket received the refresh message')
+
         io.emit('refreshData')
     })
 
@@ -15,6 +18,7 @@ io.on('connection', function (socket) {
   });
 
 module.exports = function(app) {
+
     app.post('/queryDb', function(req, res) {
         let dbQuery = 'SELECT * FROM parentNode';
 
@@ -42,6 +46,27 @@ module.exports = function(app) {
 
     })
 
+    app.post('/updateDb', function(req, res) {
+
+        let data = req.body
+
+
+
+        console.log(data.id)
+
+        let dbQuery = 'DELETE FROM childNode WHERE parentId = ?'
+
+        connection.query(dbQuery, data.id, function(err, result) {
+            if (err) throw err;
+
+            console.log('result from delete update: ' + JSON.stringify(result))
+
+            updateChild(data, res)
+
+        })
+
+    })
+
     app.post('/parentNode', function(req, res) {
 
     let data = req.body.data
@@ -56,9 +81,95 @@ module.exports = function(app) {
 
 
     })
-    
+
+    app.post('/deleteDb', function(req, res) {
+
+        let data = req.body
+
+        let dbQuery = 'DELETE FROM parentNode WHERE id = ?'
+
+        connection.query(dbQuery, data.id, function(err, result) {
+            if (err) throw err;
+
+            console.log(result)
+
+            deleteRoot(data, res)
+
+        })
+
+    })
 }
 
+// Delete from
+const deleteRoot = (data, res) => {
+
+    let dbQuery = 'DELETE FROM root WHERE id = ?'
+
+    connection.query(dbQuery, data.id, function(err, result) {
+        if (err) throw err;
+
+        deleteChild(data, res)
+
+    })
+
+}
+
+const updateChild = (data, res) => {
+
+    console.log('this is the data: ' + JSON.stringify(data))
+
+    let mainArr = []
+
+    let insertId = parseInt(data.id)
+
+    let high = parseInt(data.upper)
+    let low = parseInt(data.lower)
+
+    for (let i = 0; i < parseInt(data.count); i++) {
+
+        let arr = []
+
+        let numGen = Math.floor(Math.random() * (high - low) + low)    
+
+        arr.push(insertId)
+        arr.push(numGen)
+        mainArr.push(arr)
+    }
+
+    let dbQuery = 'INSERT INTO childNode (parentId, assignNum) VALUES ?'
+
+    connection.query(dbQuery, [mainArr], function(err, result) {
+        if (err) throw err;
+
+        res.end()
+
+    })
+
+    
+
+
+
+
+
+
+}
+
+// Delete Children from childNode
+const deleteChild = (data, res) => {
+
+    let dbQuery = 'DELETE FROM childNode WHERE parentID = ?'
+
+    connection.query(dbQuery, data.id, function(err, result) {
+
+        if (err) throw err;
+
+        res.send(result)
+
+    })
+
+}
+
+// Post to parent Node Table
 const postParent = (data, res) => {
 
     // Insert into parent node
@@ -70,9 +181,8 @@ const postParent = (data, res) => {
     })
 }
 
- const postChild = (data, res, result) => {
-
-    // console.log('the result: ' + JSON.stringify(result))
+// Post to childNode table
+const postChild = (data, res, result) => {
     
     let mainArr = []
 
@@ -105,6 +215,7 @@ const postParent = (data, res) => {
     res.end()
  };
 
+//  Query the root table to gather root data
  const queryRoot = (dataObj, res) => {
 
     let dbQuery = 'SELECT * FROM root'
@@ -119,6 +230,7 @@ const postParent = (data, res) => {
 
  }
 
+//  Query choldNode for Child data to add to result object
  const childRoot = (dataObj, res) => {
 
     let dbQuery = 'SELECT * FROM childNode'

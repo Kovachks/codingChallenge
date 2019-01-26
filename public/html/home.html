@@ -28,20 +28,19 @@
         </div>
       </div>
       <div class='col-md-2 buttonDiv'>    
-        <button type="button" class="btn btn-secondary" onclick='postNodes()'>Generate Node</button> 
+        <button type="button" class="btn btn-secondary" onclick='postNodes()'>Generate Factory</button>
       </div>  
     </div>
     <div class='row'>
       <div class='col-md-2'></div>
         <div class='col-md-8' id='errorDisplay'>
-            this is a test
           </div>
     </div>
     <div class='row'>
         <div class='col-md-2'>
 
           </div>
-          <div class='col-md-3'>
+          <div class='col-md-6'>
             <ul class='rootUl' id='listView'>
             </ul>
           </div>
@@ -51,12 +50,14 @@
   <div class='container'>
 
   </div>
-  <div id='inputBox'>
-    <label for="generateInput" id='generageInputLabel'>Item Count:</label>
-    <input type="number" id='generateInput'>
-    <button class='btn btn-secondary generateBtn'>Generate</button>
-    <button class='btn btn-secondary generateBtn'>Delete</button>
-  
+  <div id='inputBox' class='input-group'>
+    <label for="generateInput" id='generateInputLabel'>Item Count:</label>
+    <input type="number" class='form-control' id='generateInput' placeholder='New Item Count' >
+    <div class='btnGroup'>
+      <button class='btn btn-secondary generateBtn' onclick='generateNewNodes()' id='generateChildBtn'>Generate</button>
+      <button class='btn btn-secondary generateBtn' onclick='deleteParent()' id='deleteBtn'>Delete</button>    
+    </div>
+   
   </div>
   
   <!-- Call Scripts -->

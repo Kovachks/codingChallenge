@@ -4,11 +4,28 @@
 }
 
 .parentUl {
-  padding: 0 0 0 30px;
+  margin-left: 5px;
+  border-left: 1px solid black;
+}
+
+.treeLi {
+  width: 25px;
+  height: 14px;
+  margin-bottom: 10.8px;
+  float: left;
+  border-bottom: 1px solid black;
+}
+
+.childLiTree {
+  width: 25px;
+  height: 14px;
+  float: left;
+  border-bottom: 1px solid black;
 }
 
 .childUl {
-  padding: 0 0 0 30px;
+  margin-left: 30px;
+  border-left: 1px solid black;
 }
 
 #errorDisplay {
@@ -16,13 +33,43 @@
   display: none;
 }
 
+.factoryName:hover {
+  text-decoration: underline;
+}
+
+.factoryName {
+  display: inline;
+}
+.range{
+  float: right;
+}
+
+.range:hover {
+  text-decoration: underline;
+}
+
+#generateInput {
+  font-size: 12px;
+  margin-top: 0px;
+}
+
+#generateInputLabel {
+  font-size: 12px;
+  padding-left: 10px;
+  margin: 0;
+}
+
 #inputBox {
   position: absolute;
   display: none;
-  height: 75px;
+  height: 90px;
   width: 150px;
   z-index: 2;
   border: 1px black solid;
+}
+
+.btnGroup {
+  margin: 5px 0 0 5px;
 }
 
 #generageInputLabel {

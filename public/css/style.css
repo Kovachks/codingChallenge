@@ -44,7 +44,11 @@
   float: right;
 }
 
-.range:hover {
+.lower:hover {
+  text-decoration: underline;
+}
+
+.upper:hover {
   text-decoration: underline;
 }
 
@@ -56,8 +60,9 @@
 
 .dynamicInput {
   position: absolute;
+  background-color: #D3D3D3;
   display: none;
-  height: 90px;
+  height: 80px;
   width: 150px;
   z-index: 2;
   border: 1px black solid;
@@ -67,8 +72,14 @@
   margin: 5px 0 0 5px;
 }
 
-#generageInputLabel {
-  font-size: 16px;
+.generateInputLabel {
+  padding: 5px 0 0 10px;
+  margin: 0;
+}
+
+.dynamicInput {
+  font-size: 12px;
+  /* padding-left: 10px; */
   margin: 0 3.5%;
 }
 

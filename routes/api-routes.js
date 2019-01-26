@@ -100,6 +100,50 @@ module.exports = function(app) {
         })
 
     })
+
+    app.post('/updateLower', function(req, res) {
+
+        let data = req.body
+
+        console.log(data)
+
+        let dbQuery = 'UPDATE parentNode SET lowerBound = ? WHERE id = ?'
+
+        let inserts = [data.updateNum, data.id]
+
+        dbQuery = mysql.format(dbQuery, inserts)
+
+        connection.query(dbQuery, function(err, result) {
+            if (err) throw err
+
+            console.log(result)
+
+            res.end()
+        })
+
+    })
+
+    app.post('/updateUpper', function(req, res) {
+
+        let data = req.body
+
+        console.log(data)
+
+        let dbQuery = 'UPDATE parentNode SET upperBound = ? WHERE id = ?'
+
+        let inserts = [data.updateNum, data.id]
+
+        dbQuery = mysql.format(dbQuery, inserts)
+
+        connection.query(dbQuery, function(err, result) {
+            if (err) throw err
+
+            console.log(result)
+
+            res.end()
+        })
+
+    })
 }
 
 // Delete from

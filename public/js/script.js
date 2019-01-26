@@ -1,80 +1,4 @@
-// import { Socket } from "dgram";
-
 var socket = io();
-
-// // Enabling Websocket
-// if (window.location.hostname !== 'localhost') {
-//     var socket = io.connect('https://boiling-beyond-83726.herokuapp.com/socket.io/socket.io.js')
-// } else {
-//     var socket = io.connect('http://' + window.location.hostname);
-// }
-
-console.log(window.location)
-
-document.addEventListener('click', function(e) {
-
-    console.log(e.srcElement.dataset)
-
-    if (e.srcElement.className === 'factoryName') {
-
-        document.getElementById('lowerLimitBox').style.display = 'none';
-        document.getElementById('upperLimitBox').style.display = 'none';
-
-        let inputBox = document.getElementById('inputBox')
-        let childBtn = document.getElementById('generateChildBtn')
-
-        // set input box near clicked factory list item
-        inputBox.style.display = 'inline-block' 
-        inputBox.style.top = `${e.clientY}px`
-        inputBox.style.left = `${e.clientX + 50}px`
-        
-        // adding id value to generate/delete buttons
-        childBtn.setAttribute('data-id', e.srcElement.dataset.id)
-        childBtn.setAttribute('data-upperBound', e.srcElement.dataset.upperbound)
-        childBtn.setAttribute('data-lowerBound', e.srcElement.dataset.lowerbound)
-        document.getElementById('deleteBtn').setAttribute('data-id', e.srcElement.dataset.id)
-
-
-        return
-
-    } else if (e.srcElement.classList[1] === 'lower') {
-
-        document.getElementById('inputBox').style.display = 'none';
-        document.getElementById('upperLimitBox').style.display = 'none';
-
-        let lowerBox = document.getElementById('lowerLimitBox')
-
-        lowerBox.style.display = 'inline-block' 
-        lowerBox.style.top = `${e.clientY}px`
-        lowerBox.style.left = `${e.clientX + 70}px`
-
-        // Set lower box near clicked lower limit item
-        
-
-    } else if (e.srcElement.classList[1] === 'upper') {
-
-        let upperBox = document.getElementById('upperLimitBox')
-
-        document.getElementById('inputBox').style.display = 'none';
-        document.getElementById('lowerLimitBox').style.display = 'none';
-
-        upperBox.style.display = 'inline-block' 
-        upperBox.style.top = `${e.clientY}px`
-        upperBox.style.left = `${e.clientX + 70}px`
-
-    } else if (e.srcElement.className === 'btn btn-secondary generateBtn' || e.srcElement.id === 'generateInput' ) {
-
-        return
-
-    } else {
-
-        document.getElementById('inputBox').style.display = 'none'
-        document.getElementById('lowerLimitBox').style.display = 'none'
-        document.getElementById('upperLimitBox').style.display = 'none'
-
-    } 
-    
-}, false);
 
 // Receiving the refresh data socket emit call in order to refresh data
 socket.on('refreshData', function(data) {
@@ -116,8 +40,6 @@ const generateNewNodes = () => {
         return
     }
 
-
-
     let data = {
         id: id,
         count: count,
@@ -142,10 +64,104 @@ const generateNewNodes = () => {
 
     dataRefresh()        
 
+    document.getElementById('generateInput').value = ''
+
     }
 
     request.send(JSON.stringify(data))
 
+}
+
+const updateLower = () => {
+
+    let updateNum = parseInt(document.getElementById('generateLower').value)
+    let updateBtn = document.getElementById('updateLower')
+
+    let id = parseInt(updateBtn.getAttribute('data-id'))
+    let lower = parseInt(updateBtn.getAttribute('data-lowerbound'))
+    let upper = parseInt(updateBtn.getAttribute('data-upperbound'))
+
+    console.log(typeof updateNum)
+    console.log(updateNum)
+
+    if (updateNum >= upper) {
+        alert ('Updated number must be lower than upper range')
+        return
+    } else {
+
+        let data = {
+            updateNum: updateNum,
+            id: id,
+            lower: lower,
+            upper: upper
+        }
+
+        // Create request variable for use in AJAX request
+        const request = new XMLHttpRequest();
+
+        // Open route to post at /parentNode url
+        request.open('POST', '/updateLower');
+
+        // Set Request header to receive JSON
+        request.setRequestHeader('Content-Type', 'application/JSON');
+
+        // Begin function when data is returned from server
+        request.onload = function(data) {
+        
+        
+        }
+        
+        // Send data to server
+        request.send(JSON.stringify(data))
+
+    }
+
+
+}
+
+const updateUpper = () => {
+    let updateNum = parseInt(document.getElementById('generateUpper').value)
+    let updateBtn = document.getElementById('updateUpper')
+
+    let id = parseInt(updateBtn.getAttribute('data-id'))
+    let lower = parseInt(updateBtn.getAttribute('data-lowerbound'))
+    let upper = parseInt(updateBtn.getAttribute('data-upperbound'))
+
+    console.log(typeof updateNum)
+    console.log(updateNum)
+
+    if (updateNum <= lower) {
+        alert ('Updated number must be higher than lower end of range')
+        return
+    } else {
+
+        let data = {
+            updateNum: updateNum,
+            id: id,
+            lower: lower,
+            upper: upper
+        }
+
+        // Create request variable for use in AJAX request
+        const request = new XMLHttpRequest();
+
+        // Open route to post at /parentNode url
+        request.open('POST', '/updateUpper');
+
+        // Set Request header to receive JSON
+        request.setRequestHeader('Content-Type', 'application/JSON');
+
+        // Begin function when data is returned from server
+        request.onload = function(data) {
+        
+        dataRefresh()
+
+        }
+        
+        // Send data to server
+        request.send(JSON.stringify(data))
+
+    }
 }
 
 const deleteParent = () => {
@@ -174,6 +190,8 @@ const deleteParent = () => {
     document.getElementById('inputBox').style.display = 'none'
 
     dataRefresh()        
+
+    document.getElementById('generateInput').value = ''
 
     }
 

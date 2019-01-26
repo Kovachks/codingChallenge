@@ -52,24 +52,24 @@
   </div>
   <div id='inputBox' class='input-group dynamicInput'>
     <label for="generateInput" id='generateInputLabel' class='generateInputLabel'>Item Count:</label>
-    <input type="number" class='form-control generateInput' id='generateInput' placeholder='New Item Count' >
+    <input type="number" class='form-control generateInput' id='generateInput'>
     <div class='btnGroup'>
       <button class='btn btn-secondary generateBtn' onclick='generateNewNodes()' id='generateChildBtn'>Generate</button>
       <button class='btn btn-secondary generateBtn' onclick='deleteParent()' id='deleteBtn'>Delete</button>    
     </div>  
   </div>
   <div id='lowerLimitBox' class='input-group dynamicInput'>
-    <label for="generateLower" class='generateInputLabel'>New Lower Limit</label>
-    <input type="number" class='form-control generateInput' id='generateLower' placeholder='New Lower Limit'>
+    <label for="generateLower" class='generateInputLabel'>New Lower Limit:</label>
+    <input type="number" class='form-control generateInput' id='generateLower'>
     <div class='btnGroup'>
-      <button class='btn btn-secondary generateBtn'>Update</button>
+      <button class='btn btn-secondary generateBtn' id='updateLower' onclick='updateLower()'>Update</button>
     </div>
   </div>
   <div id='upperLimitBox' class='input-group dynamicInput'>
-    <label for="generateUpper" class='generateInputLabel'>New Upper Limit</label>
-    <input type="number" class='form-control generateInput' id='generateUpper' placeholder='New Upper Limit'>
+    <label for="generateUpper" class='generateInputLabel'>New Upper Limit:</label>
+    <input type="number" class='form-control generateInput' id='generateUpper'>
     <div class='btnGroup'>
-      <button class='btn btn-secondary generateBtn'>Update</button>
+      <button class='btn btn-secondary generateBtn' id='updateUpper' onclick='updateUpper()'>Update</button>
     </div>
   </div>
   
@@ -77,6 +77,7 @@
   <!-- <script src="/socket.io/socket.io.js"></script> -->
   <script src="./js/socket.io.js"></script>
   <script src='https://boiling-beyond-83726.herokuapp.com/'></script>
+  <script src='./js/clickHandle.js'></script>
   <script src='./js/script.js'></script>
 
 </body>

@@ -11,7 +11,7 @@ var io = require('socket.io').listen(server);
 
 console.log("------------------------------: " + process.env.PORT)
 
-server.listen(process.env.PORT || 80);
+server.listen(process.env.PORT + 1 || 80);
 
 io.on('connection', function (socket) {
 

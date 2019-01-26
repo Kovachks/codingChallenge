@@ -210,7 +210,7 @@ const updateChild = (data, res) => {
 
         let arr = []
 
-        let numGen = Math.floor(Math.random() * (high - low) + low)    
+        let numGen = Math.round(Math.random() * (high - low) + low)    
 
         arr.push(insertId)
         arr.push(numGen)
@@ -300,7 +300,7 @@ const postChild = (data, res, result) => {
 
         let arr = []
 
-        let numGen = Math.floor(Math.random() * (high - low) + low)    
+        let numGen = Math.round(Math.random() * (high - low) + low)    
 
         // console.log(numGen)
         

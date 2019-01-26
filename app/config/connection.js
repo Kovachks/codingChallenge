@@ -1,9 +1,5 @@
+// Requiring mysql for use later
 let mysql = require('mysql');
-
-if (process.env.database) {
-    console.log(process.env.database)
-    console.log('database found!')
-}
 
 //Set up mysql connection
 const connection = mysql.createConnection({
@@ -14,6 +10,7 @@ const connection = mysql.createConnection({
     database: process.env.database || 'codingChallenge'
 })
 
+// Connecting to mysql database
 connection.connect(function(err) {
     if (err) {
         console.log('error connecting: ' + err.stack);
@@ -22,4 +19,5 @@ connection.connect(function(err) {
     console.log('connected as id ' + connection.threadId)
 })
 
+// exporting mysql connection
 module.exports =  connection

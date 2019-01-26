@@ -52,7 +52,6 @@ document.addEventListener('click', function(e) {
         upperBox.style.top = `${e.clientY}px`
         upperBox.style.left = `${e.clientX + 70}px`
 
-
     } else if (e.srcElement.className === 'btn btn-secondary generateBtn' || e.srcElement.id === 'generateInput' ) {
 
         return

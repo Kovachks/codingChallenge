@@ -16,6 +16,8 @@ module.exports = function(app) {
 
             let dataObj = {}
             
+            console.log(result)
+
             dataObj.parentNode = result
 
             queryRoot(dataObj, res)
@@ -224,6 +226,27 @@ const updateChild = (data, res) => {
 
         console.log(result)
 
+        updateParent(data, res)
+
+        // res.end()
+
+    })
+
+}
+
+const updateParent = (data, res) => {
+    
+    console.log('data for update' + JSON.stringify(data))
+
+    let dbQuery = 'UPDATE ?? SET ?? = ? WHERE ?? = ?'
+
+    let insert = ['parentNode', 'childNum', data.count, 'id', data.id]
+
+    dbQuery = mysql.format(dbQuery, insert)
+
+    connection.query(dbQuery, function(err, result) {
+        if (err) throw err
+
         res.end()
 
     })
@@ -314,7 +337,7 @@ const postChild = (data, res, result) => {
 
  }
 
-//  Query choldNode for Child data to add to result object
+//  Query childNode for Child data to add to result object
  const childRoot = (dataObj, res) => {
 
     let dbQuery = 'SELECT ?? FROM ??'

@@ -1,10 +1,10 @@
+// Create socket variable
 var socket = io();
 
 // Receiving the refresh data socket emit call in order to refresh data
 socket.on('refreshData', function(data) {
 
-    console.log('socket received the refreshdata command')
-
+    // Clear out data currently on the page
     document.getElementById('listView').innerHTML = ''
 
     // Call getRoute to refresh client side data
@@ -15,24 +15,22 @@ socket.on('refreshData', function(data) {
 // Function to emit refresh to server side web socket
 const dataRefresh = () => {
 
-    console.log('the socket emitted the refresh')
-
+    // Emit refresh to the server
     socket.emit('refresh')
 
 }
 
+// Function to create new child nodes
 const generateNewNodes = () => {
 
+    // Create variables for use later
     let btn = document.getElementById('generateChildBtn')
-
     let id = btn.getAttribute('data-id')
-
     let upper = btn.getAttribute('data-upperbound')
-
     let lower = btn.getAttribute('data-lowerbound')
-
     let count = parseInt(document.getElementById('generateInput').value)
 
+    // Validate the user input is between 1-15
     if (count > 15 || count < 1) {
         
         alert('new count must be between 1 and 15')
@@ -40,6 +38,7 @@ const generateNewNodes = () => {
         return
     }
 
+    // Create data object
     let data = {
         id: id,
         count: count,
@@ -60,35 +59,40 @@ const generateNewNodes = () => {
     request.onload = function(data) {
         // console.log(data)
 
+    // Hide input box after return from server
     document.getElementById('inputBox').style.display = 'none'
 
+    // Call dataRefresh to emit socket message
     dataRefresh()        
 
+    // Reset input
     document.getElementById('generateInput').value = ''
 
     }
 
+    // Send data object to server
     request.send(JSON.stringify(data))
 
 }
 
+// Funciton to update the lower bound
 const updateLower = () => {
 
+    // Create variables for use later
     let updateNum = parseInt(document.getElementById('generateLower').value)
     let updateBtn = document.getElementById('updateLower')
-
     let id = parseInt(updateBtn.getAttribute('data-id'))
     let lower = parseInt(updateBtn.getAttribute('data-lowerbound'))
     let upper = parseInt(updateBtn.getAttribute('data-upperbound'))
     let count = updateBtn.getAttribute('data-count')
 
-    console.log('count: ' + count)
-
+    // Validate that the user entered number is lower than the upper limit
     if (updateNum >= upper) {
         alert ('Updated number must be lower than upper range')
         return
     } else {
-
+        
+        // Create data object to send to server
         let data = {
             updateNum: updateNum,
             count: count,
@@ -122,10 +126,12 @@ const updateLower = () => {
 
 }
 
+// Function to update the upper bound
 const updateUpper = () => {
+
+    // Create variables for use later
     let updateNum = parseInt(document.getElementById('generateUpper').value)
     let updateBtn = document.getElementById('updateUpper')
-
     let id = parseInt(updateBtn.getAttribute('data-id'))
     let lower = parseInt(updateBtn.getAttribute('data-lowerbound'))
     let upper = parseInt(updateBtn.getAttribute('data-upperbound'))
@@ -134,6 +140,7 @@ const updateUpper = () => {
     console.log(typeof updateNum)
     console.log(updateNum)
 
+    // Validate the update number is higher than the lower limit
     if (updateNum <= lower) {
         alert ('Updated number must be higher than lower end of range')
         
@@ -141,6 +148,7 @@ const updateUpper = () => {
 
     } else {
 
+        // Create data object to send to the serve
         let data = {
             updateNum: updateNum,
             count: count,
@@ -196,13 +204,13 @@ const deleteParent = () => {
 
     document.getElementById('inputBox').style.display = 'none'
 
+    // Call data refresh
     dataRefresh()        
 
+    // Reset value of input
     document.getElementById('generateInput').value = ''
 
     }
-
-
 
     // Send data to server
     request.send(JSON.stringify(data))
@@ -227,7 +235,7 @@ const getRoute = () => {
         // Parsing  out response
         let resData = JSON.parse(request.response)
 
-        console.log(resData)
+        console.log(JSON.stringify(resData))
 
         // Creating data string container
         let dataStr = ''
@@ -252,7 +260,7 @@ const getRoute = () => {
             // Loop through current factories and gather the generated numbers
             for (let k = 0; k < resData.parentNode[i].childNode.length; k++) {
                 
-
+                // Check if childNode is the last in the list.  If so add the End class as opposed to the standard class
                 if (k === resData.parentNode[i].childNode.length - 1) {
                     dataStr += `<li class='childLiTreeEnd'></li><li class='' value=${resData.parentNode[i].childNode[k].parentID}>${resData.parentNode[i].childNode[k].assignNum}</li>`
                 } else {
@@ -279,6 +287,7 @@ const getRoute = () => {
 
 }
 
+// Post 
 const postNodes = () => {
 
     // Create variables used multiple times for ease of use later
@@ -308,6 +317,7 @@ const postNodes = () => {
 
     }
 
+    // validate name length to be less than or equal to 30
     if (name.value.length > 30) {
         
         name.style.borderColor = 'red'
@@ -369,7 +379,6 @@ const postNodes = () => {
         return
 
     } 
-
 
     // Validate lowerLim for whole integer between 1-999 and lower than Upper Limit
     // Regex used to validate a whole integer
@@ -451,4 +460,5 @@ const postNodes = () => {
     }))
 }
 
+// Load the page with data from the server
 getRoute()

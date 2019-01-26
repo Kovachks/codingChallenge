@@ -1,12 +1,13 @@
 document.addEventListener('click', function(e) {
 
-    console.log(e.srcElement.className)
-
+    // If factory name selected open the inputbox
     if (e.srcElement.className === 'factoryName') {
 
+        // Hide other potential input boxes that might be open
         document.getElementById('lowerLimitBox').style.display = 'none';
         document.getElementById('upperLimitBox').style.display = 'none';
 
+        // Create variables for use later
         let inputBox = document.getElementById('inputBox')
         let childBtn = document.getElementById('generateChildBtn')
 
@@ -24,13 +25,14 @@ document.addEventListener('click', function(e) {
 
         return
 
+        // If lower bound was selected open lower update input
     } else if (e.srcElement.classList[1] === 'lower') {
 
+        // Hide other potential iput boxes that might be open
         document.getElementById('inputBox').style.display = 'none';
         document.getElementById('upperLimitBox').style.display = 'none';
 
-        console.log(e.srcElement.dataset)
-
+        // Create variables for use later
         let updateLower = document.getElementById('updateLower')
         let lowerBox = document.getElementById('lowerLimitBox')
 
@@ -46,16 +48,19 @@ document.addEventListener('click', function(e) {
         updateLower.setAttribute('data-count', e.srcElement.dataset.count)
         
 
+        // If upper bound was selected open upper update input
     } else if (e.srcElement.classList[1] === 'upper') {
 
         let upperBox = document.getElementById('upperLimitBox')
 
+        // Hide other potential input boxes that may be open
         document.getElementById('inputBox').style.display = 'none';
         document.getElementById('lowerLimitBox').style.display = 'none';
 
+        // Create variables for later
         let updateUpper = document.getElementById('updateUpper')
-        // let upperBox = document.getElementById('upperLimitBox')
-
+       
+        // Display upper input update box
         upperBox.style.display = 'inline-block' 
         upperBox.style.top = `${e.clientY}px`
         upperBox.style.left = `${e.clientX - 250}px`
@@ -66,12 +71,14 @@ document.addEventListener('click', function(e) {
         updateUpper.setAttribute('data-lowerBound', e.srcElement.dataset.lower)
         updateUpper.setAttribute('data-count', e.srcElement.dataset.count)
 
+        // Keep input box open if selecting HTML elementing within box
     } else if (e.srcElement.className === 'btn btn-secondary generateBtn' || e.srcElement.className === 'form-control generateInput' ) {
 
         return
 
     } else {
 
+        // Hide input boxes
         document.getElementById('inputBox').style.display = 'none'
         document.getElementById('lowerLimitBox').style.display = 'none'
         document.getElementById('upperLimitBox').style.display = 'none'

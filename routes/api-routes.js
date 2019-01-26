@@ -1,39 +1,15 @@
 const connection = require('../app/config/connection.js')
-
-// var express = require('express')
-//   , http = require('http');
-// //make sure you keep this order
-// var app = express();
-// var server = http.createServer(app);
-// var io = require('socket.io').listen(server);
-
-// //... 
-
-// console.log("------------------------------: " + process.env.PORT)
-
-
-
-// server.listen(process.env.PORT || 80);
-
-// io.on('connection', function (socket) {
-
-//     console.log('a user has connected' )
-
-//     socket.on('refresh', function(data) {
-
-
-//         console.log('socket received the refresh message')
-
-//         io.emit('refreshData')
-//     })
-
-
-//   });
+const mysql = require('mysql')
 
 module.exports = function(app) {
 
     app.post('/queryDb', function(req, res) {
-        let dbQuery = 'SELECT * FROM parentNode';
+
+        let dbQuery = 'SELECT * FROM ??';
+
+        let inserts = ['parentNode']
+
+        dbQuery = mysql.format(dbQuery, inserts)
 
         connection.query(dbQuery, function(err, result) {
             if (err) throw err;
@@ -47,12 +23,16 @@ module.exports = function(app) {
     })
 
     app.post('/root', function(req, res){
-        
-        let dbQuery = 'INSERT INTO root factoryName VALUE ?;'
-        
+
         let data = req.body.data
 
-        connection.query(dbQuery, data.factoryName, function(err, result) {
+        let dbQuery = 'INSERT INTO ?? ?? VALUE ?'
+
+        var inserts = ['root', 'factoryName', data.id]
+
+        dbQuery = mysql.format(dbQuery, inserts)
+
+        connection.query(dbQuery, function(err, result) {
             if (err) throw err;
             res.send(result)
         })
@@ -63,13 +43,15 @@ module.exports = function(app) {
 
         let data = req.body
 
-
-
         console.log(data.id)
 
-        let dbQuery = 'DELETE FROM childNode WHERE parentId = ?'
+        let dbQuery = 'DELETE FROM ?? WHERE ?? = ?'
 
-        connection.query(dbQuery, data.id, function(err, result) {
+        var inserts = ['childNode', 'parentId', data.id]
+
+        dbQuery = mysql.format(dbQuery, inserts)
+
+        connection.query(dbQuery, function(err, result) {
             if (err) throw err;
 
             console.log('result from delete update: ' + JSON.stringify(result))
@@ -101,9 +83,14 @@ module.exports = function(app) {
 
         console.log('THIS IS DATA ID: ' + data.id)
 
-        let dbQuery = 'DELETE FROM parentNode WHERE id = ?'
+        let dbQuery = 'DELETE FROM ?? WHERE id = ?'
 
-        connection.query(dbQuery, data.id, function(err, result) {
+        var inserts = ['parentNode', data.id]
+
+        dbQuery = mysql.format(dbQuery, inserts)
+
+
+        connection.query(dbQuery, function(err, result) {
             if (err) throw err;
 
             console.log(result)
@@ -118,9 +105,13 @@ module.exports = function(app) {
 // Delete from
 const deleteRoot = (data, res) => {
 
-    let dbQuery = 'DELETE FROM root WHERE id = ?'
+    let dbQuery = 'DELETE FROM ?? WHERE id = ?'
 
-    connection.query(dbQuery, data.id, function(err, result) {
+    var inserts = ['root', data.id]
+
+    dbQuery = mysql.format(dbQuery, inserts)
+
+    connection.query(dbQuery, function(err, result) {
         if (err) throw err;
 
         deleteChild(data, res)
@@ -160,21 +151,18 @@ const updateChild = (data, res) => {
 
     })
 
-    
-
-
-
-
-
-
 }
 
 // Delete Children from childNode
 const deleteChild = (data, res) => {
 
-    let dbQuery = 'DELETE FROM childNode WHERE parentID = ?'
+    let dbQuery = 'DELETE FROM ?? WHERE ?? = ?'
 
-    connection.query(dbQuery, data.id, function(err, result) {
+    let inserts = ['childNode', 'parentID', data.id]
+
+    dbQuery = mysql.format(dbQuery, inserts)
+
+    connection.query(dbQuery, function(err, result) {
 
         if (err) throw err;
 
@@ -188,9 +176,13 @@ const deleteChild = (data, res) => {
 const postParent = (data, res) => {
 
     // Insert into parent node
-    let dbQuery = 'INSERT INTO parentNode (parentName, childNum, upperBound, lowerBound) VALUES (?, ?, ?, ?);'
+    let dbQuery = 'INSERT INTO ?? (??, ??, ??, ??) VALUES (?, ?, ?, ?);'
 
-    connection.query(dbQuery, [data.name, data.childNum, data.upperLim, data.lowerLim], function(err, result) {
+    let inserts = ['parentNode', 'parentName', 'childNum', 'upperBound', 'lowerBound', data.name, data.childNum, data.upperLim, data.lowerLim]
+
+    dbQuery = mysql.format(dbQuery, inserts)
+
+    connection.query(dbQuery, function(err, result) {
         if (err) throw err;
         postChild(data, res, result)
     })
@@ -221,9 +213,13 @@ const postChild = (data, res, result) => {
         mainArr.push(arr)
     }
 
-    let dbQuery = 'INSERT INTO childNode (parentId, assignNum) VALUES ?'
+    let dbQuery = 'INSERT INTO childNode (??, ??) VALUES ?'
 
-    connection.query(dbQuery, [mainArr], function(err, result) {
+    let inserts = ['parentId', 'assignNum', [mainArr]]
+
+    dbQuery = mysql.format(dbQuery, inserts)
+
+    connection.query(dbQuery, function(err, result) {
         if (err) throw err;
     })
 
@@ -233,7 +229,11 @@ const postChild = (data, res, result) => {
 //  Query the root table to gather root data
  const queryRoot = (dataObj, res) => {
 
-    let dbQuery = 'SELECT * FROM root'
+    let dbQuery = 'SELECT ?? FROM ??'
+
+    let inserts = ['*', 'root']
+
+    dbQuery = mysql.format(dbQuery, inserts)
 
     connection.query(dbQuery, function(err, result) {
 
@@ -248,7 +248,11 @@ const postChild = (data, res, result) => {
 //  Query choldNode for Child data to add to result object
  const childRoot = (dataObj, res) => {
 
-    let dbQuery = 'SELECT * FROM childNode'
+    let dbQuery = 'SELECT ?? FROM ??'
+
+    let inserts = ['*', 'childNode']
+
+    dbQuery = mysql.format(dbQuery, inserts)
 
     connection.query(dbQuery, function(err, result) {
         

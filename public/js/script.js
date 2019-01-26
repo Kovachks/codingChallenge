@@ -138,9 +138,7 @@ const generateNewNodes = () => {
     request.onload = function(data) {
         // console.log(data)
 
-        console.log('----------------------------------------------------------------------')
-
-    console.log(request.response)
+    document.getElementById('inputBox').style.display = 'none'
 
     dataRefresh()        
 
@@ -173,9 +171,7 @@ const deleteParent = () => {
     request.onload = function(data) {
         // console.log(data)
 
-        console.log('----------------------------------------------------------------------')
-
-    console.log(request.response)
+    document.getElementById('inputBox').style.display = 'none'
 
     dataRefresh()        
 

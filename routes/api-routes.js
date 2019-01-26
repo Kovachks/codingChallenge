@@ -9,7 +9,7 @@ var io = require('socket.io').listen(server);
 
 //... 
 
-server.listen(80);
+server.listen(process.env.PORT || 80);
 
 io.on('connection', function (socket) {
 

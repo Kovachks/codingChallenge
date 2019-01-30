@@ -13,8 +13,12 @@ socket.on('refreshData', function(data) {
 })
 
 
-const isEmptyOrSpaces = (str) => {
+const isEmptyOrSpaces = str => {
     return str === null || str.match(/^ *$/) !== null;
+}
+
+const htmlScriptCheck = str => {
+ return /[!@#$%^&*(),.?":{}|<>]/g.test(str)  
 }
 
 // Function to emit refresh to server side web socket
@@ -37,14 +41,36 @@ const generateNewNodes = () => {
     let updateName = document.getElementById('generateInput')
     let count = btn.getAttribute('data-count')
 
-    console.log(updateName.value)
+    // Validate lenght is less than 31 characters
+    if (updateName.value.length > 30) {
 
-    // Validate the user input is between 1-15
+        console.log('fired') 
+        
+        alert('please enter a name which is between 1 and 30 characters')
+
+        updateName.value = ''
+        
+        return
+
+    }
+
+
+    // Validate if there is whitespace in user input
     if (isEmptyOrSpaces(updateName.value)) {
         
         alert(`new Factory name can't be all white space`)
         
         return
+    }
+
+    // Validate against possible html/script injection
+    if (htmlScriptCheck(updateName.value)) {
+        
+        // Alert user name can't contain any special characters
+        alert(`Name can't contain any special characters`)
+        
+        return
+    
     }
 
     // Create data object
@@ -57,8 +83,6 @@ const generateNewNodes = () => {
         name: name
     }
 
-    console.log(data)
-
     // Create request variable for use in AJAX request
     const request = new XMLHttpRequest();
 
@@ -70,6 +94,15 @@ const generateNewNodes = () => {
 
     // Begin function when data is returned from server
     request.onload = function(data) {
+
+        // Alert the user of their failed attack if found
+        if (data.srcElement.response === 'not so fast my friend') {
+            
+            alert(data.srcElement.response)
+        
+            return
+
+        }
 
         // Hide input box after return from server
         document.getElementById('inputBox').style.display = 'none'
@@ -131,6 +164,16 @@ const updateLower = () => {
 
         // Begin function when data is returned from server
         request.onload = function(data) {
+
+            // Alert the user of their failed attack if found
+            if (data.srcElement.response === 'not so fast my friend') {
+
+                alert(data.srcElement.response)
+            
+                return
+
+            }
+    
         
             // Calling refresh function
             dataRefresh()
@@ -193,6 +236,15 @@ const updateUpper = () => {
 
         // Begin function when data is returned from server
         request.onload = function(data) {
+
+        // Alert the user of their failed attack if found
+        if (data.srcElement.response === 'not so fast my friend') {
+            
+            alert(data.srcElement.response)
+        
+            return
+
+        }
         
             // Call refresh data
             dataRefresh()
@@ -212,13 +264,24 @@ const updateUpper = () => {
 // Deletes the parent
 const deleteParent = () => {
 
-    // Set variable for use later
-    let id = document.getElementById('deleteBtn').getAttribute('data-id')
+    // Gather data attributes
+    let btn = document.getElementById('deleteBtn')
+    let id = btn.getAttribute('data-id')
+    let upper = btn.getAttribute('data-upperbound')
+    let lower = btn.getAttribute('data-lowerbound')
+    let name = btn.getAttribute('data-name')
+    let count = btn.getAttribute('data-count')
 
     // Set data object
     let data = {
-        id: id
+        id: id,
+        upper: upper,
+        lower: lower,
+        count: count,
+        name: name
     }
+
+    console.log(data)
 
     // Create request variable for use in AJAX request
     const request = new XMLHttpRequest();
@@ -231,6 +294,15 @@ const deleteParent = () => {
 
     // Begin function when data is returned from server
     request.onload = function(data) {
+
+        // Alert the user of their failed attack if found
+        if (data.srcElement.response === 'not so fast my friend') {
+
+            alert(data.srcElement.response)
+        
+            return
+
+        }
 
         // Hide input box when messaged received from server
         document.getElementById('inputBox').style.display = 'none'
@@ -325,6 +397,16 @@ const postNodes = () => {
     const lowerLim = document.getElementById('lowerLim');
     const upperLim = document.getElementById('upperLim');
     const error = document.getElementById('errorDisplay');
+
+    // Validate against possible html/script injection
+    if (htmlScriptCheck(name.value)) {
+            
+        // Alert user name can't contain any special characters
+        alert(`Name can't contain any special characters`)
+        
+        return
+
+    }
 
     if (isEmptyOrSpaces(name.value)) {
         

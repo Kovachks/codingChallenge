@@ -1,3 +1,4 @@
+// Add event listener to document for dynamically generated elements
 document.addEventListener('click', function(e) {
 
     // If factory name selected open the inputbox
@@ -10,19 +11,27 @@ document.addEventListener('click', function(e) {
         // Create variables for use later
         let inputBox = document.getElementById('inputBox')
         let childBtn = document.getElementById('generateChildBtn')
+        let deleteBtn = document.getElementById('deleteBtn')
 
         // set input box near clicked factory list item
         inputBox.style.display = 'inline-block' 
-        inputBox.style.top = `${e.clientY}px`
+        inputBox.style.top = `${e.layerY}px`
         inputBox.style.left = `${e.clientX + 50}px`
 
-        // adding id value to generate/delete buttons
+        // adding id data to generate button
         childBtn.setAttribute('data-id', e.srcElement.dataset.id)
         childBtn.setAttribute('data-upperBound', e.srcElement.dataset.upperbound)
         childBtn.setAttribute('data-lowerBound', e.srcElement.dataset.lowerbound)
         childBtn.setAttribute('data-name', e.srcElement.dataset.name)
         childBtn.setAttribute('data-count', e.srcElement.dataset.count)
-        document.getElementById('deleteBtn').setAttribute('data-id', e.srcElement.dataset.id)
+
+        // Adding data to delete buttons
+        deleteBtn.setAttribute('data-id', e.srcElement.dataset.id)
+        deleteBtn.setAttribute('data-upperBound', e.srcElement.dataset.upperbound)
+        deleteBtn.setAttribute('data-lowerBound', e.srcElement.dataset.lowerbound)
+        deleteBtn.setAttribute('data-name', e.srcElement.dataset.name)
+        deleteBtn.setAttribute('data-count', e.srcElement.dataset.count)
+
 
 
         return
@@ -40,8 +49,8 @@ document.addEventListener('click', function(e) {
 
         // Set lower box near clicked lower limit item
         lowerBox.style.display = 'inline-block' 
-        lowerBox.style.top = `${e.clientY}px`
-        lowerBox.style.left = `${e.clientX - 250}px`
+        lowerBox.style.top = `${e.layerY}px`
+        lowerBox.style.left = `${e.clientX - 200}px`
 
         // Assign value to update button
         updateLower.setAttribute('data-id', e.srcElement.dataset.id)
@@ -65,8 +74,8 @@ document.addEventListener('click', function(e) {
        
         // Display upper input update box
         upperBox.style.display = 'inline-block' 
-        upperBox.style.top = `${e.clientY}px`
-        upperBox.style.left = `${e.clientX - 250}px`
+        upperBox.style.top = `${e.layerY}px`
+        upperBox.style.left = `${e.clientX - 200}px`
 
         // Assign value to update button
         updateUpper.setAttribute('data-id', e.srcElement.dataset.id)

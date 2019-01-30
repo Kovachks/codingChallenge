@@ -11,3 +11,4 @@ Persistant website to test front-end and back-end skills.  Website should accomp
  - Changes will immediately be seen across browsers through the use of Socket.io
  - Validate user inputs and protect against SQL injections
  - Backend database used is MYSQL
+ - Factories drop and add new children upon each new generation

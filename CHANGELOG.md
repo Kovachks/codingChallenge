@@ -13,7 +13,6 @@
  - Validated DB queries for data
  - Validated against script/html injection on client side
  - Updated input boxes to be set to the layerY as opposed to the clientY
- - 
 
 ## v1.0.0 = Jan. 26, 2019
 

@@ -12,6 +12,11 @@ socket.on('refreshData', function(data) {
 
 })
 
+
+const isEmptyOrSpaces = (str) => {
+    return str === null || str.match(/^ *$/) !== null;
+}
+
 // Function to emit refresh to server side web socket
 const dataRefresh = () => {
 
@@ -28,12 +33,16 @@ const generateNewNodes = () => {
     let id = btn.getAttribute('data-id')
     let upper = btn.getAttribute('data-upperbound')
     let lower = btn.getAttribute('data-lowerbound')
-    let count = parseInt(document.getElementById('generateInput').value)
+    let name = btn.getAttribute('data-name')
+    let updateName = document.getElementById('generateInput')
+    let count = btn.getAttribute('data-count')
+
+    console.log(updateName.value)
 
     // Validate the user input is between 1-15
-    if (count > 15 || count < 1) {
+    if (isEmptyOrSpaces(updateName.value)) {
         
-        alert('new count must be between 1 and 15')
+        alert(`new Factory name can't be all white space`)
         
         return
     }
@@ -41,10 +50,14 @@ const generateNewNodes = () => {
     // Create data object
     let data = {
         id: id,
-        count: count,
+        updateName: updateName.value,
         upper: upper,
-        lower: lower
+        lower: lower,
+        count: count,
+        name: name
     }
+
+    console.log(data)
 
     // Create request variable for use in AJAX request
     const request = new XMLHttpRequest();
@@ -84,6 +97,7 @@ const updateLower = () => {
     let lower = parseInt(updateBtn.getAttribute('data-lowerbound'))
     let upper = parseInt(updateBtn.getAttribute('data-upperbound'))
     let count = updateBtn.getAttribute('data-count')
+    let name = updateBtn.getAttribute('data-name')
 
     // Validate that the user entered number is lower than the upper limit
     if (updateNum >= upper) {
@@ -102,7 +116,8 @@ const updateLower = () => {
             count: count,
             id: id,
             lower: lower,
-            upper: upper
+            upper: upper,
+            updateName: name
         }
 
         // Create request variable for use in AJAX request
@@ -144,6 +159,7 @@ const updateUpper = () => {
     let lower = parseInt(updateBtn.getAttribute('data-lowerbound'))
     let upper = parseInt(updateBtn.getAttribute('data-upperbound'))
     let count = updateBtn.getAttribute('data-count')
+    let name = updateBtn.getAttribute('data-name')
 
     // Validate the update number is higher than the lower limit
     if (updateNum <= lower) {
@@ -162,7 +178,8 @@ const updateUpper = () => {
             count: count,
             id: id,
             lower: lower,
-            upper: upper
+            upper: upper,
+            updateName: name
         }
 
         // Create request variable for use in AJAX request
@@ -264,9 +281,9 @@ const getRoute = () => {
         for (let i = 0; i < resData.parentNode.length; i++) {
 
             // Add factory data to list
-            dataStr += `<li class='factoryName' data-id=${resData.parentNode[i].id} data-upperBound=${resData.parentNode[i].upperBound} data-lowerBound=${resData.parentNode[i].lowerBound}}>${resData.parentNode[i].parentName}</li>
-            <li class='treeLi'></li><li class='range upper' data-id=${resData.parentNode[i].id} data-count=${resData.parentNode[i].childNum} data-lower=${resData.parentNode[i].lowerBound} data-upper=${resData.parentNode[i].upperBound}>${resData.parentNode[i].upperBound}</li>
-            <li class='range'>  -  </li><li class='range lower' data-id=${resData.parentNode[i].id} data-count=${resData.parentNode[i].childNum} data-lower=${resData.parentNode[i].lowerBound} data-upper=${resData.parentNode[i].upperBound}>${resData.parentNode[i].lowerBound}</li>
+            dataStr += `<li class='factoryName' data-id=${resData.parentNode[i].id} data-name=${resData.parentNode[i].parentName} data-count=${resData.parentNode[i].childNum} data-upperBound=${resData.parentNode[i].upperBound} data-lowerBound=${resData.parentNode[i].lowerBound}>${resData.parentNode[i].parentName}</li>
+            <li class='treeLi'></li><li class='range upper' data-name=${resData.parentNode[i].parentName} data-id=${resData.parentNode[i].id} data-count=${resData.parentNode[i].childNum} data-lower=${resData.parentNode[i].lowerBound} data-upper=${resData.parentNode[i].upperBound}>${resData.parentNode[i].upperBound}</li>
+            <li class='range'>  -  </li><li class='range lower' data-name=${resData.parentNode[i].parentName} data-id=${resData.parentNode[i].id} data-count=${resData.parentNode[i].childNum} data-lower=${resData.parentNode[i].lowerBound} data-upper=${resData.parentNode[i].upperBound}>${resData.parentNode[i].lowerBound}</li>
             <ul class='childUl'>`
 
             // Loop through current factories and gather the generated numbers
@@ -307,7 +324,16 @@ const postNodes = () => {
     const childNum = document.getElementById('childNum');
     const lowerLim = document.getElementById('lowerLim');
     const upperLim = document.getElementById('upperLim');
-    const error = document.getElementById('errorDisplay')
+    const error = document.getElementById('errorDisplay');
+
+    if (isEmptyOrSpaces(name.value)) {
+        
+        // display error
+        error.style.display = 'inline-block'
+        error.innerHTML = `Factory Name can't be all white space` 
+        return
+    
+    }
 
     // Resetting error display
     error.style.display = 'none'
@@ -327,6 +353,8 @@ const postNodes = () => {
         return
 
     }
+
+
 
     // validate name length to be less than or equal to 30
     if (name.value.length > 30) {

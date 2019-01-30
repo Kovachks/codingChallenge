@@ -57,6 +57,8 @@ const deleteLower = (data, res) => {
 // Function to generate new numbers after range has been altered
 const updateChild = (data, res) => {
 
+    console.log(data)
+
     // Setting array to hold array of child values
     let mainArr = []
 
@@ -87,6 +89,8 @@ const updateChild = (data, res) => {
     // Set database query
     let dbQuery = 'INSERT INTO childNode (parentId, assignNum) VALUES ?'
 
+    console.log(mainArr)
+
     // query database inserting children from mainArr
     connection.query(dbQuery, [mainArr], function(err, result) {
         
@@ -107,7 +111,7 @@ const updateParent = (data, res) => {
     let dbQuery = 'UPDATE ?? SET ?? = ? WHERE ?? = ?'
 
     // Create array of values for use in the query
-    let insert = ['parentNode', 'childNum', data.count, 'id', data.id]
+    let insert = ['parentNode', 'parentName', data.updateName, 'id', data.id]
 
     // Format query
     dbQuery = mysql.format(dbQuery, insert)

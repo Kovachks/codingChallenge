@@ -12,6 +12,7 @@
   border-left: 1px solid
 }
 
+
 .treeLi {
   width: 25px;
   height: 14px;
@@ -58,6 +59,7 @@
 
 .factoryName {
   display: inline;
+  height: 21px;
 }
 .range{
   float: right;

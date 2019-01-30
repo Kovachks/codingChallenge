@@ -15,11 +15,13 @@ document.addEventListener('click', function(e) {
         inputBox.style.display = 'inline-block' 
         inputBox.style.top = `${e.clientY}px`
         inputBox.style.left = `${e.clientX + 50}px`
-        
+
         // adding id value to generate/delete buttons
         childBtn.setAttribute('data-id', e.srcElement.dataset.id)
         childBtn.setAttribute('data-upperBound', e.srcElement.dataset.upperbound)
         childBtn.setAttribute('data-lowerBound', e.srcElement.dataset.lowerbound)
+        childBtn.setAttribute('data-name', e.srcElement.dataset.name)
+        childBtn.setAttribute('data-count', e.srcElement.dataset.count)
         document.getElementById('deleteBtn').setAttribute('data-id', e.srcElement.dataset.id)
 
 
@@ -46,6 +48,7 @@ document.addEventListener('click', function(e) {
         updateLower.setAttribute('data-upperBound', e.srcElement.dataset.upper)
         updateLower.setAttribute('data-lowerBound', e.srcElement.dataset.lower)
         updateLower.setAttribute('data-count', e.srcElement.dataset.count)
+        updateLower.setAttribute('data-name', e.srcElement.dataset.name)
         
 
         // If upper bound was selected open upper update input
@@ -70,6 +73,7 @@ document.addEventListener('click', function(e) {
         updateUpper.setAttribute('data-upperBound', e.srcElement.dataset.upper)
         updateUpper.setAttribute('data-lowerBound', e.srcElement.dataset.lower)
         updateUpper.setAttribute('data-count', e.srcElement.dataset.count)
+        updateUpper.setAttribute('data-name', e.srcElement.dataset.name)
 
         // Keep input box open if selecting HTML elementing within box
     } else if (e.srcElement.className === 'btn btn-secondary generateBtn' || e.srcElement.className === 'form-control generateInput' ) {

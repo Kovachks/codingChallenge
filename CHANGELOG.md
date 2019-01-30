@@ -9,7 +9,7 @@
  - Changed generateNewNodes function to change the name of the selected element as opposed to changing the quantity of children.
  - Added whitespace validation to text inputs to not allow whitespace only user inputs
  - Updated HTML title
- - Provided server side validation against injections for renaming existing factories along with updating, deleting, upper/lower bound
+ - Provided server side validation against injections for creating, updating, and deleting factories along with updating the upper/lower bounds
  - Validated DB queries for data
  - Validated against script/html injection on client side
  - Updated input boxes to be set to the layerY as opposed to the clientY
